@@ -1,0 +1,13 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "JetBrains Mono";
+  src: url("../src/assets/fonts/JetBrainsMono-Bold.ttf") format("opentype");
+}
+ 
+.coming-soon-shadow {
+    box-shadow: 0 0 20px #ffffff;
+
+}
