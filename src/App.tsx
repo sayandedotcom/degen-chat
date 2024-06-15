@@ -6,7 +6,7 @@ function App() {
   return (
     <div className="relative w-full h-screen ">
       <video
-        className="absolute top-0 left-0 w-full h-full object-cover object-bottom opacity-80"
+        className="absolute top-0 left-0 w-full h-full object-cover object-top opacity-80"
         src={bgVideo}
         autoPlay
         loop
