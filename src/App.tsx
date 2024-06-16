@@ -1,23 +1,40 @@
-import React, { useRef, useState } from "react";
-import bgVideo from "./assets/bg.mp4";
+import React, { useRef, useState, useEffect } from "react";
+import bgVideo from "./assets/bg1.mp4";
 import bottle from "./assets/bottle.png";
 import winMusic from "./assets/win.mp3";
+import { IoVolumeMuteOutline } from "react-icons/io5";
+import { VscUnmute } from "react-icons/vsc";
 
 const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
+  useEffect(() => {
+    audioRef.current!.play();
+  }, []);
+
+  const handlePlayForSmallerDevices = () => {
+    setIsPlaying(false);
+    if (audioRef.current) {
+      {
+        isPlaying ? audioRef.current.pause() : audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
+    }
+  };
   const handlePlay = () => {
     if (audioRef.current) {
-      audioRef.current.play();
-      setIsPlaying(true);
+      {
+        isPlaying ? audioRef.current.pause() : audioRef.current.play();
+      }
+      setIsPlaying(!isPlaying);
     }
   };
 
   return (
-    <div className="relative w-full h-screen">
+    <div className="relative w-full h-screen ">
       <video
-        className="absolute top-0 left-0 w-full h-full object-cover object-top opacity-80"
+        className="absolute top-0 left-0 w-full h-full object-cover object-center "
         src={bgVideo}
         autoPlay
         loop
@@ -29,15 +46,35 @@ const App: React.FC = () => {
           Your browser does not support the audio element.
         </audio>
       </div>
-      {!isPlaying && (
+
+      <div className=" hidden lg:block relative top-[50px]">
         <button
           onClick={handlePlay}
-          className="absolute top-0 left-0 w-full h-full flex  justify-center text-white text-[20px] font-bold"
+          className=" hidden lg:flex lg:absolute lg:top-0 lg:left-[-50px] lg:w-full lg:h-full  lg:justify-end lg:text-white lg:text-[20px] lg:font-bold"
           style={{ zIndex: 1000 }}
         >
-          Play Music
+          {isPlaying ? (
+            <VscUnmute className=" " />
+          ) : (
+            <IoVolumeMuteOutline className=" " />
+          )}
         </button>
-      )}
+      </div>
+
+      <div className=" lg:hidden relative top-[50px]">
+        <button
+          onClick={handlePlayForSmallerDevices}
+          className=" hidden lg:flex lg:absolute lg:top-0 lg:left-[-50px] lg:w-full lg:h-full  lg:justify-end lg:text-white lg:text-[20px] lg:font-bold"
+          style={{ zIndex: 1000 }}
+        >
+          {isPlaying ? (
+            <IoVolumeMuteOutline className=" " />
+          ) : (
+            <VscUnmute className=" " />
+          )}
+        </button>
+      </div>
+
       <div className="relative z-10 flex items-center justify-center h-full top-[-100px] lg:top-[-50px]">
         <div className="text-white text-center flex flex-col justify-between">
           <img src={bottle} className="mx-auto w-[100px] h-auto" alt="bottle" />
@@ -52,7 +89,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </div>
-      <div className="absolute top-0 left-0 w-full h-full bg-black opacity-80 z-0"></div>
+      {/* <div className="absolute top-0 left-0 w-full h-full bg-black opacity-80 z-0"></div> */}
     </div>
   );
 };
