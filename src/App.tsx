@@ -2,7 +2,11 @@
 
 import bgVideo from "./assets/bg.mp4";
 import bottle from "./assets/bottle.png";
+import { useRef } from "react";
+import winMusic from "./assets/win.mp3"
+// import Finished from "./components/wallet-adapter";
 function App() {
+  const audioRef = useRef(null);
   return (
     <div className="relative w-full h-screen ">
       <video
@@ -12,8 +16,13 @@ function App() {
         loop
         muted
       />
-
-      <div className="relative z-10 flex items-center justify-center h-full">
+      <div>
+        <audio ref={audioRef} loop autoPlay>
+          <source src={winMusic} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
+      <div className="relative z-10 flex items-center justify-center h-full top-[-100px] lg:top-[-50px]">
         <div className="text-white text-center flex flex-col justify-between">
           <img src={bottle} className=" mx-auto w-[100px] h-auto" />
           <h1 className=" text-[40px] lg:text-[80px] font-bold  font-jbm uppercase">
