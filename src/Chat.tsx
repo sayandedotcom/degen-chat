@@ -4,7 +4,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import settingsIcon from "./assets/settings.svg";
 import settingsCloseIcon from "./assets/settingsClose.svg";
 import io from "socket.io-client";
-
+import { handleSettingsSave } from "./utils/handleSettings";
 const socket = io("http://localhost:3000");
 
 interface Message {
@@ -16,6 +16,12 @@ interface Settings {
   motion: string;
 }
 
+interface WebsiteTheme {
+  bgColor: string;
+  textColor: string;
+  buttonColor: string;
+}
+
 const Chat = () => {
   const [currentUserMessage, setCurrentUserMessage] = useState("");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -24,6 +30,12 @@ const Chat = () => {
     visual: "rem",
     audio: "win",
     motion: "chaos",
+  });
+
+  const [websiteTheme, setWebsiteTheme] = useState<WebsiteTheme>({
+    bgColor: "#0000FF",
+    textColor: "#ffffff",
+    buttonColor: "#00FF00",
   });
 
   useEffect(() => {
@@ -51,11 +63,22 @@ const Chat = () => {
     }
   };
 
+  const handleSave = () => {
+    setIsSettingsOpen(false);
+    handleSettingsSave(settingsModal, websiteTheme, setWebsiteTheme);
+  };
+
   return (
-    <div className="w-full h-screen bg-[#0000FF] relative font-jbm uppercase max-h-screen overflow-hidden">
+    <div
+      style={{
+        backgroundColor: websiteTheme.bgColor,
+        color: websiteTheme.textColor,
+      }}
+      className={`w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
+    >
       <div className="h-[10%]">
         <div className="w-[90%] flex justify-end">
-          <Navbar />
+          <Navbar websiteTheme />
         </div>
       </div>
       {/* -------------------------------------- */}
@@ -66,8 +89,10 @@ const Chat = () => {
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
         {isSettingsOpen ? (
-          <div className="w-[70%] lg:w-[30%] relative top-[-100px]">
-            <div className=" bg-white p-5 rounded-[8px] flex flex-col gap-[5px] ">
+          <div className="w-[70%] lg:w-[30%] relative top-[-100px] text-black">
+            <div
+              className={` bg-white  p-5 rounded-[8px] flex flex-col gap-[5px] `}
+            >
               <div className=" flex items-center rounded-[8px] ">
                 <div className=" w-[15%] ">
                   <p className=" text-[10px] lg:text-[16px]">visual</p>
@@ -194,7 +219,13 @@ const Chat = () => {
                       setSettingsModal({ ...settingsModal, audio: "win" })
                     }
                   >
-                    <div className="hidden lg:block  bg-[#ffffff] text-white text-[10px] p-2 border border-black h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer"></div>
+                    <div
+                      className={`hidden lg:block  bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        settingsModal.audio === "win"
+                          ? "border-[#0000FF]"
+                          : "border-black"
+                      }  h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
+                    ></div>
                     <p
                       className={`text-[10px] lg:text-[16px] ${
                         settingsModal.audio === "win"
@@ -212,7 +243,13 @@ const Chat = () => {
                       setSettingsModal({ ...settingsModal, audio: "slide" })
                     }
                   >
-                    <div className=" hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border border-black h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer"></div>
+                    <div
+                      className={` hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        settingsModal.audio === "slide"
+                          ? "border-[#0000FF]"
+                          : "border-black"
+                      } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
+                    ></div>
 
                     <p
                       className={` text-[10px] lg:text-[16px] border ${
@@ -231,7 +268,13 @@ const Chat = () => {
                       setSettingsModal({ ...settingsModal, audio: "on" })
                     }
                   >
-                    <div className="hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border border-black h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer"></div>
+                    <div
+                      className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        settingsModal.audio === "on"
+                          ? "border-[#0000FF]"
+                          : "border-black"
+                      } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
+                    ></div>
 
                     <p
                       className={` text-[10px] lg:text-[16px] border ${
@@ -250,7 +293,13 @@ const Chat = () => {
                       setSettingsModal({ ...settingsModal, audio: "synth" })
                     }
                   >
-                    <div className="hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border border-black h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer"></div>
+                    <div
+                      className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        settingsModal.audio === "synth"
+                          ? "border-[#0000FF]"
+                          : "border-black"
+                      } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
+                    ></div>
 
                     <p
                       className={` text-[10px] lg:text-[16px] ${
@@ -269,7 +318,13 @@ const Chat = () => {
                       setSettingsModal({ ...settingsModal, audio: "ambient" })
                     }
                   >
-                    <div className="hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border border-black h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer"></div>
+                    <div
+                      className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        settingsModal.audio === "ambient"
+                          ? "border-[#0000FF]"
+                          : "border-black"
+                      } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
+                    ></div>
 
                     <p
                       className={` text-[10px] lg:text-[16px] ${
@@ -287,8 +342,19 @@ const Chat = () => {
               <div className=" flex items-center  rounded-[8px]">
                 <p className=" w-[18%] text-[10px] lg:text-[16px]">motion</p>
                 <div className=" flex w-full justify-around">
-                  <div className=" flex flex-col items-center">
-                    <div className="hidden lg:block bg-[#white] text-black border border-black  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] ">
+                  <div
+                    className=" flex flex-col items-center"
+                    onClick={() =>
+                      setSettingsModal({ ...settingsModal, motion: "chaos" })
+                    }
+                  >
+                    <div
+                      className={`hidden lg:block bg-[#white] ${
+                        settingsModal.motion === "chaos"
+                          ? "text-[#0000FF] border border-[#0000FF]"
+                          : "text-black border border-black"
+                      }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer`}
+                    >
                       <p>dont sin</p>
                       <p>dont sin</p>
                       <p>dont sin</p>
@@ -297,8 +363,19 @@ const Chat = () => {
                       chaos
                     </p>
                   </div>
-                  <div className=" flex flex-col items-center">
-                    <div className="hidden lg:block bg-[#white] text-black border border-black  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] ">
+                  <div
+                    className=" flex flex-col items-center"
+                    onClick={() =>
+                      setSettingsModal({ ...settingsModal, motion: "focused" })
+                    }
+                  >
+                    <div
+                      className={`hidden lg:block bg-[#white] ${
+                        settingsModal.motion === "focused"
+                          ? "text-[#0000FF] border border-[#0000FF]"
+                          : "text-black border border-black"
+                      }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer `}
+                    >
                       <p>dont sin</p>
                       <p>dont sin</p>
                       <p>dont sin</p>
@@ -307,8 +384,22 @@ const Chat = () => {
                       focused
                     </p>
                   </div>
-                  <div className=" flex flex-col items-center">
-                    <div className="hidden lg:block bg-[#white] text-black border border-black  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] ">
+                  <div
+                    className=" flex flex-col items-center"
+                    onClick={() =>
+                      setSettingsModal({
+                        ...settingsModal,
+                        motion: "equator",
+                      })
+                    }
+                  >
+                    <div
+                      className={`hidden lg:block bg-[#white] ${
+                        settingsModal.motion === "equator"
+                          ? "text-[#0000FF] border border-[#0000FF]"
+                          : "text-black border border-black"
+                      } lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer`}
+                    >
                       <p>dont sin</p>
                       <p>dont sin</p>
                       <p>dont sin</p>
@@ -317,8 +408,19 @@ const Chat = () => {
                       equator
                     </p>
                   </div>
-                  <div className=" flex flex-col items-center">
-                    <div className="hidden lg:block bg-[#white] text-black border border-black  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] ">
+                  <div
+                    className=" flex flex-col items-center"
+                    onClick={() =>
+                      setSettingsModal({ ...settingsModal, motion: "b/w" })
+                    }
+                  >
+                    <div
+                      className={`hidden lg:block bg-[#white] ${
+                        settingsModal.motion === "b/w"
+                          ? "text-[#0000FF] border border-[#0000FF]"
+                          : "text-black border border-black"
+                      }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer`}
+                    >
                       <p>dont sin</p>
                       <p>dont sin</p>
                       <p>dont sin</p>
@@ -327,7 +429,10 @@ const Chat = () => {
                       b/w
                     </p>
                   </div>
-                  <button className=" lg:block lg:h-[70px] lg:w-[70px] uppercase flex items-center justify-center  text-[10px] lg:text-[16px] ">
+                  <button
+                    className=" lg:block lg:h-[70px] lg:w-[70px] uppercase flex items-center justify-center  text-[10px] lg:text-[16px] "
+                    onClick={handleSave}
+                  >
                     save
                   </button>
                 </div>
@@ -349,7 +454,12 @@ const Chat = () => {
           className="p-[10px] lg:p-[15px] bg-white rounded-[4px] lg:rounded-[8px]"
           onClick={handleSendMessage}
         >
-          <AiOutlineSend className="w-[28px] lg:w-[35px] h-auto text-[#0000FF]" />
+          <AiOutlineSend
+            className={`w-[28px] lg:w-[35px] h-auto `}
+            style={{
+              color: websiteTheme.buttonColor,
+            }}
+          />
         </button>
         <button
           className="p-[10px] lg:p-[15px] bg-white rounded-[4px] lg:rounded-[8px]"
