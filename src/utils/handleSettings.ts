@@ -31,7 +31,7 @@ export const handleSettingsSave = (
         ...websiteTheme,
         bgColor: "#00FF00",
         textColor: "#000000",
-        buttonColor: "#000000",
+        buttonColor: "#00FF00",
       });
       break;
     case "hmmm":

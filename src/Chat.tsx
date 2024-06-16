@@ -5,6 +5,8 @@ import settingsIcon from "./assets/settings.svg";
 import settingsCloseIcon from "./assets/settingsClose.svg";
 import io from "socket.io-client";
 import { handleSettingsSave } from "./utils/handleSettings";
+import SettingsIcon from "./components/SettingsIcon";
+import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 
 interface Message {
@@ -35,7 +37,7 @@ const Chat = () => {
   const [websiteTheme, setWebsiteTheme] = useState<WebsiteTheme>({
     bgColor: "#0000FF",
     textColor: "#ffffff",
-    buttonColor: "#00FF00",
+    buttonColor: "#0000FF",
   });
 
   useEffect(() => {
@@ -89,9 +91,13 @@ const Chat = () => {
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
         {isSettingsOpen ? (
-          <div className="w-[70%] lg:w-[30%] relative top-[-100px] text-black">
+          <div className="w-[70%] lg:w-[40%] xl:w-[35%] relative top-[-100px] text-black">
             <div
-              className={` bg-white  p-5 rounded-[8px] flex flex-col gap-[5px] `}
+              className={`${
+                websiteTheme.bgColor === "#ffffff"
+                  ? "border border-black"
+                  : "border-none"
+              } bg-white  p-5 rounded-[8px] flex flex-col gap-[5px] `}
             >
               <div className=" flex items-center rounded-[8px] ">
                 <div className=" w-[15%] ">
@@ -440,18 +446,26 @@ const Chat = () => {
             </div>
           </div>
         ) : (
-          <div className="w-[70%] lg:w-[30%]">
+          <div className="w-[70%] lg:w-[40%] xl:w-[35%] ">
             <input
               placeholder="this is settings modal"
               value={currentUserMessage}
-              className="bg-white text-[#121212] uppercase p-3 lg:p-5 mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none"
+              className={`bg-white ${
+                websiteTheme.bgColor === "#ffffff"
+                  ? "border border-black"
+                  : "border-none"
+              } text-[#121212] uppercase p-3 lg:p-5 mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none`}
               onChange={(e) => setCurrentUserMessage(e.target.value)}
               onKeyDown={handleKeyDown}
             />
           </div>
         )}
         <button
-          className="p-[10px] lg:p-[15px] bg-white rounded-[4px] lg:rounded-[8px]"
+          className={`p-[10px] lg:p-[15px] ${
+            websiteTheme.bgColor === "#ffffff"
+              ? "border border-black"
+              : "border-none"
+          } bg-white rounded-[4px] lg:rounded-[8px]`}
           onClick={handleSendMessage}
         >
           <AiOutlineSend
@@ -462,13 +476,18 @@ const Chat = () => {
           />
         </button>
         <button
-          className="p-[10px] lg:p-[15px] bg-white rounded-[4px] lg:rounded-[8px]"
+          className={`p-[10px] lg:p-[15px] ${
+            websiteTheme.bgColor === "#ffffff"
+              ? "border border-black"
+              : "border-none"
+          } bg-white rounded-[4px] lg:rounded-[8px]`}
           onClick={() => setIsSettingsOpen(!isSettingsOpen)}
         >
-          <img
-            src={isSettingsOpen ? settingsCloseIcon : settingsIcon}
-            className="w-[28px] lg:w-[35px] h-auto"
-          />
+          {isSettingsOpen ? (
+            <SettingsClosed color={websiteTheme.buttonColor} />
+          ) : (
+            <SettingsIcon color={websiteTheme.buttonColor} />
+          )}
         </button>
       </div>
     </div>
