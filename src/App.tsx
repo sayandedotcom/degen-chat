@@ -1,13 +1,24 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import bgVideo from "./assets/bg1.mp4";
 import bottle from "./assets/bottle.png";
 import winMusic from "./assets/win.mp3";
 import { IoVolumeMuteOutline } from "react-icons/io5";
 import { VscUnmute } from "react-icons/vsc";
-
+import { ArrowIcon, PhantomIcon, SolflareIcon } from "./components/Icons";
+import { motion } from "framer-motion";
+import { useWallet } from "@solana/wallet-adapter-react";
 const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
+  const [showConnectWallet, setShowConnectWallet] = useState(false);
+  const solanaButtonRef = useRef<HTMLButtonElement>(null);
+  const { connect } = useWallet();
+
+  const handlePhantomWalletConnect = () => {
+    if (solanaButtonRef.current) {
+      solanaButtonRef.current.click();
+    }
+  };
 
   useEffect(() => {
     audioRef.current!.play();
@@ -64,7 +75,7 @@ const App: React.FC = () => {
       <div className=" lg:hidden relative top-[50px]">
         <button
           onClick={handlePlayForSmallerDevices}
-          className=" hidden lg:flex lg:absolute lg:top-0 lg:left-[-50px] lg:w-full lg:h-full  lg:justify-end lg:text-white lg:text-[20px] lg:font-bold"
+          className="  flex absolute top-0 left-[-50px] w-full h-full  justify-end text-white text-[20px] font-bold"
           style={{ zIndex: 1000 }}
         >
           {isPlaying ? (
@@ -84,12 +95,48 @@ const App: React.FC = () => {
           <p className="text-[15px] lg:text-[24px] uppercase font-jbm">
             autism friendly chat interface from the future
           </p>
-          <div className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full">
-            cumming to you soon
-          </div>
+          {showConnectWallet ? (
+            <motion.div
+              initial={{ y: "100%" }}
+              animate={{ y: 0 }}
+              exit={{ y: "100%" }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full flex flex-col gap-2"
+            >
+              <p className=" text-center text-[15px] lg:text-[24px]">Select</p>
+              <div className=" w-[5%] h-[2px] mx-auto bg-[#0000FF]"></div>
+              <div className=" flex flex-col gap-3 lg:gap-5">
+                <button
+                  className=" flex justify-between w-[80%] mx-auto uppercase"
+                  onClick={handlePhantomWalletConnect}
+                >
+                  <div className=" flex gap-3 items-center">
+                    <PhantomIcon />
+                    <p>Phantom</p>
+                  </div>
+                  <ArrowIcon />
+                </button>
+                <div className=" mx-auto w-[80%] bg-[#0000ff] h-[2px]" />
+                <button className=" flex justify-between w-[80%] mx-auto uppercase">
+                  <div className=" flex gap-3 items-center">
+                    <SolflareIcon />
+                    <p>solflare</p>
+                  </div>
+                  <ArrowIcon />
+                </button>
+              </div>
+            </motion.div>
+          ) : (
+            <button
+              className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full"
+              onClick={() => setShowConnectWallet(true)}
+            >
+              connect n chat
+            </button>
+          )}
         </div>
       </div>
-      {/* <div className="absolute top-0 left-0 w-full h-full bg-black opacity-80 z-0"></div> */}
+      <div className="lg:hidden absolute top-0 left-0 w-full h-full bg-black opacity-30 z-0"></div>
     </div>
   );
 };

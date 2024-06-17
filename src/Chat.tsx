@@ -7,6 +7,7 @@ import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 import { motion, AnimatePresence } from "framer-motion";
+import { Message } from "../src/components/Message";
 
 interface Message {
   message: string;
@@ -26,22 +27,40 @@ interface WebsiteTheme {
 const Chat = () => {
   const [currentUserMessage, setCurrentUserMessage] = useState("");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
-  const [messages, setMessages] = useState<Message>();
   const [settingsModal, setSettingsModal] = useState<Settings>({
     visual: "rem",
     audio: "win",
     motion: "chaos",
   });
-
   const [websiteTheme, setWebsiteTheme] = useState<WebsiteTheme>({
     bgColor: "#0000FF",
     textColor: "#ffffff",
     buttonColor: "#0000FF",
   });
 
+  const [initialMessages, setInitialMessages] = useState([
+    { id: 1, text: "Message 1" },
+    { id: 2, text: "Message 2" },
+    { id: 3, text: "Message 3" },
+  ]);
+  const [newMessage, setNewMessage] = useState([]);
+
+  const messagesData = [
+    "THERE IS A WORLD OUT THERE THAT'S CALLING MY NAME, AND IT'S CALLING YOURS TOO :)",
+    "GET RICH OR GET RUGGED!",
+    "PUMP. RUG PERHAPS?",
+    "DON'T SIN",
+    "IF YOU SEND SOMEONE AN EMAIL SAYING YOU ARE GOING TO KILL YOURSELF AND ATTACH YOUR PASSPORT AND DRIVERS LICENSE, YOU MAY BE SURPRISED BY WHAT HAPPENS",
+    "FUCK AROUND AND GET FUCKD, LOL!",
+  ];
+
+ 
+
   useEffect(() => {
     const handleNewMessage = (msg: Message) => {
-      setMessages(msg);
+      setNewMessage((prevMessages: any) => {
+        return [...prevMessages, msg];
+      });
     };
     socket.on("newMessage", handleNewMessage);
 
@@ -90,7 +109,11 @@ const Chat = () => {
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto">
         <div className="">display chats here</div>
-        {messages && <p>messages</p>}
+        <AnimatePresence initial={false}>
+          {newMessage.map((msg, index) => (
+            <Message id={index} message={msg} />
+          ))}
+        </AnimatePresence>
       </div>
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
@@ -101,7 +124,7 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[70%] lg:w-[40%] xl:w-[35%] relative top-[-100px] text-black"
+              className="w-[70%] lg:w-[40%] xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black"
             >
               <div
                 className={`${
