@@ -1,19 +1,20 @@
 import { motion } from "framer-motion";
 
 interface Message {
-  id: number;
   message: string;
+  username: string;
 }
-export const Message: React.FC<Message> = ({ id, message }) => {
+export const MessageComponent: React.FC<Message> = ({ username, message }) => {
   return (
     <motion.div
-      className=" text-white p-4 mb-2 rounded"
+      className=" text-white p-4 mb-2 rounded flex gap-2"
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
       transition={{ type: "spring", stiffness: 300, damping: 30 }}
     >
-      {message}
+      <p>{username}</p>
+      <p>{message}</p>
     </motion.div>
   );
 };

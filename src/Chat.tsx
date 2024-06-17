@@ -7,12 +7,16 @@ import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 import { motion, AnimatePresence } from "framer-motion";
-import { Message } from "../src/components/Message";
+import { MessageComponent } from "../src/components/Message";
 import { useRecoilState } from "recoil";
 import { websiteThemeState } from "./atoms/website-theme";
+import axios from "axios";
+import messageNotification from "./assets/message_notification.mp3"
 
 interface Message {
+  _id: any;
   message: string;
+  username: string;
 }
 interface Settings {
   visual: string;
@@ -35,25 +39,27 @@ const Chat = () => {
     motion: "chaos",
   });
   const [websiteTheme, setWebsiteTheme] = useRecoilState(websiteThemeState);
-  const [initialMessages, setInitialMessages] = useState([
-    { id: 1, text: "Message 1" },
-    { id: 2, text: "Message 2" },
-    { id: 3, text: "Message 3" },
-  ]);
-  const [newMessage, setNewMessage] = useState([]);
-
-  const messagesData = [
-    "THERE IS A WORLD OUT THERE THAT'S CALLING MY NAME, AND IT'S CALLING YOURS TOO :)",
-    "GET RICH OR GET RUGGED!",
-    "PUMP. RUG PERHAPS?",
-    "DON'T SIN",
-    "IF YOU SEND SOMEONE AN EMAIL SAYING YOU ARE GOING TO KILL YOURSELF AND ATTACH YOUR PASSPORT AND DRIVERS LICENSE, YOU MAY BE SURPRISED BY WHAT HAPPENS",
-    "FUCK AROUND AND GET FUCKD, LOL!",
-  ];
+  const [initialMessages, setInitialMessages] = useState<Message[]>([]);
+  const [newMessage, setNewMessage] = useState<Message[]>([]);
 
   useEffect(() => {
+    const loadInitialMessages = async () => {
+      try {
+        const response = await axios.get(
+          "http://localhost:3000/api/initialMessages"
+        );
+        const messages = response.data;
+        if (messages) {
+          setInitialMessages(messages);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    loadInitialMessages();
+
     const handleNewMessage = (msg: Message) => {
-      setNewMessage((prevMessages: any) => {
+      setNewMessage((prevMessages: Message[]) => {
         return [...prevMessages, msg];
       });
     };
@@ -67,7 +73,10 @@ const Chat = () => {
 
   const handleSendMessage = () => {
     if (currentUserMessage.trim()) {
-      socket.emit("sendMessage", currentUserMessage);
+      socket.emit("sendMessage", {
+        username: "random",
+        message: currentUserMessage,
+      });
       setCurrentUserMessage("");
     }
   };
@@ -103,10 +112,21 @@ const Chat = () => {
       </div>
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto">
-        <div className="">display chats here</div>
+        <div className="">
+          {initialMessages.map((msg: Message) => (
+            <div className="flex gap-2">
+              <p>{msg.username}</p>
+              <p>{msg.message}</p>
+            </div>
+          ))}
+        </div>
         <AnimatePresence initial={false}>
           {newMessage.map((msg, index) => (
-            <Message id={index} message={msg} />
+            <MessageComponent
+              message={msg.message}
+              username={msg.username}
+              key={msg._id}
+            />
           ))}
         </AnimatePresence>
       </div>
