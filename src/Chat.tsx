@@ -8,6 +8,8 @@ import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 import { motion, AnimatePresence } from "framer-motion";
 import { Message } from "../src/components/Message";
+import { useRecoilState } from "recoil";
+import { websiteThemeState } from "./atoms/website-theme";
 
 interface Message {
   message: string;
@@ -32,12 +34,7 @@ const Chat = () => {
     audio: "win",
     motion: "chaos",
   });
-  const [websiteTheme, setWebsiteTheme] = useState<WebsiteTheme>({
-    bgColor: "#0000FF",
-    textColor: "#ffffff",
-    buttonColor: "#0000FF",
-  });
-
+  const [websiteTheme, setWebsiteTheme] = useRecoilState(websiteThemeState);
   const [initialMessages, setInitialMessages] = useState([
     { id: 1, text: "Message 1" },
     { id: 2, text: "Message 2" },
@@ -53,8 +50,6 @@ const Chat = () => {
     "IF YOU SEND SOMEONE AN EMAIL SAYING YOU ARE GOING TO KILL YOURSELF AND ATTACH YOUR PASSPORT AND DRIVERS LICENSE, YOU MAY BE SURPRISED BY WHAT HAPPENS",
     "FUCK AROUND AND GET FUCKD, LOL!",
   ];
-
- 
 
   useEffect(() => {
     const handleNewMessage = (msg: Message) => {

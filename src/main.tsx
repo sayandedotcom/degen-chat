@@ -5,17 +5,20 @@ import "./index.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Chat from "./Chat.tsx";
 import Profile from "./components/Profile.tsx";
+import { RecoilRoot } from "recoil";
 import { SolanaWalletProvider } from "./components/WalletProvider.tsx";
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <SolanaWalletProvider>
-    <React.StrictMode>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<App />} />
-          <Route path="/chat" element={<Chat />} />
-          <Route path="/profile" element={<Profile />} />
-        </Routes>
-      </BrowserRouter>
-    </React.StrictMode>
-  </SolanaWalletProvider>
+  <RecoilRoot>
+    <SolanaWalletProvider>
+      <React.StrictMode>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<App />} />
+            <Route path="/chat" element={<Chat />} />
+            <Route path="/profile" element={<Profile />} />
+          </Routes>
+        </BrowserRouter>
+      </React.StrictMode>
+    </SolanaWalletProvider>
+  </RecoilRoot>
 );

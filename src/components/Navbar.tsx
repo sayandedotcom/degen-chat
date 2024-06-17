@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-import { SolanaConnect } from "./ConnectButton";
 const Navbar = (websiteTheme: any) => {
   return (
     <div
@@ -12,13 +11,12 @@ const Navbar = (websiteTheme: any) => {
       <Link to="/get-trench">
         <p>get $trench</p>
       </Link>
-      <Link to={"profile"}>
+      <Link to={"/profile"}>
         <p>profile</p>
       </Link>
       <Link to={"/"}>
         <p>exit</p>
       </Link>
-      {/* <SolanaConnect /> */}
     </div>
   );
 };

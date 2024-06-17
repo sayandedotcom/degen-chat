@@ -1,27 +1,31 @@
-import React, { useRef, useState, useEffect, useCallback } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import bgVideo from "./assets/bg1.mp4";
 import bottle from "./assets/bottle.png";
 import winMusic from "./assets/win.mp3";
 import { IoVolumeMuteOutline } from "react-icons/io5";
 import { VscUnmute } from "react-icons/vsc";
-import { ArrowIcon, PhantomIcon, SolflareIcon } from "./components/Icons";
 import { motion } from "framer-motion";
-import { useWallet } from "@solana/wallet-adapter-react";
+import { walletAddressState } from "./atoms/wallet";
+import { useRecoilState } from "recoil";
+import { SolanaConnect } from "./components/ConnectButton";
+import { useNavigate } from "react-router-dom";
 const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
   const [showConnectWallet, setShowConnectWallet] = useState(false);
-  const solanaButtonRef = useRef<HTMLButtonElement>(null);
-  const { connect } = useWallet();
+  const [walletAddress, setWalletAddressState] =
+    useRecoilState(walletAddressState);
 
-  const handlePhantomWalletConnect = () => {
-    if (solanaButtonRef.current) {
-      solanaButtonRef.current.click();
-    }
-  };
+  const navigate = useNavigate();
 
   useEffect(() => {
     audioRef.current!.play();
+    const walletAddressFromLocalStorage = localStorage.getItem("walletAddress");
+    if (walletAddressFromLocalStorage) {
+      {
+        setWalletAddressState(walletAddressFromLocalStorage);
+      }
+    }
   }, []);
 
   const handlePlayForSmallerDevices = () => {
@@ -103,7 +107,7 @@ const App: React.FC = () => {
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full flex flex-col gap-2"
             >
-              <p className=" text-center text-[15px] lg:text-[24px]">Select</p>
+              {/* <p className=" text-center text-[15px] lg:text-[24px]">Select</p>
               <div className=" w-[5%] h-[2px] mx-auto bg-[#0000FF]"></div>
               <div className=" flex flex-col gap-3 lg:gap-5">
                 <button
@@ -124,12 +128,21 @@ const App: React.FC = () => {
                   </div>
                   <ArrowIcon />
                 </button>
+              </div> */}
+              <div className=" mx-auto">
+                <SolanaConnect />
               </div>
             </motion.div>
           ) : (
             <button
               className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full"
-              onClick={() => setShowConnectWallet(true)}
+              onClick={() => {
+                if (walletAddress) {
+                  return navigate("/chat");
+                } else {
+                  return setShowConnectWallet(true);
+                }
+              }}
             >
               connect n chat
             </button>
