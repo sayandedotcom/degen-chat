@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Navbar from "./components/Navbar";
 import { AiOutlineSend } from "react-icons/ai";
 import io from "socket.io-client";
@@ -8,10 +8,11 @@ import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageComponent } from "../src/components/Message";
-import { useRecoilState } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
-import messageNotification from "./assets/message_notification.mp3"
+import messageNotification from "./assets/message_notification.mp3";
+import { userNameState } from "./atoms/users";
 
 interface Message {
   _id: any;
@@ -22,12 +23,6 @@ interface Settings {
   visual: string;
   audio: string;
   motion: string;
-}
-
-interface WebsiteTheme {
-  bgColor: string;
-  textColor: string;
-  buttonColor: string;
 }
 
 const Chat = () => {
@@ -41,6 +36,9 @@ const Chat = () => {
   const [websiteTheme, setWebsiteTheme] = useRecoilState(websiteThemeState);
   const [initialMessages, setInitialMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState<Message[]>([]);
+  const userName = useRecoilValue(userNameState);
+  const notificationRef = useRef<HTMLAudioElement | null>(null);
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const loadInitialMessages = async () => {
@@ -60,6 +58,7 @@ const Chat = () => {
 
     const handleNewMessage = (msg: Message) => {
       setNewMessage((prevMessages: Message[]) => {
+        notificationRef.current!.play();
         return [...prevMessages, msg];
       });
     };
@@ -74,7 +73,7 @@ const Chat = () => {
   const handleSendMessage = () => {
     if (currentUserMessage.trim()) {
       socket.emit("sendMessage", {
-        username: "random",
+        username: userName,
         message: currentUserMessage,
       });
       setCurrentUserMessage("");
@@ -97,6 +96,14 @@ const Chat = () => {
     transition: { type: "spring", stiffness: 400, damping: 10 },
   };
 
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [newMessage, initialMessages]);
+
   return (
     <div
       style={{
@@ -110,18 +117,50 @@ const Chat = () => {
           <Navbar websiteTheme />
         </div>
       </div>
+
+      <div>
+        <audio ref={notificationRef}>
+          <source src={messageNotification} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
       {/* -------------------------------------- */}
-      <div className="relative h-[75%] overflow-y-auto">
-        <div className="">
+      <div className="relative h-[75%] overflow-y-auto mb-[10px]">
+        {/* <div className="w-full h-[10%] border opacity-100 z-100"></div> */}
+
+        <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
           {initialMessages.map((msg: Message) => (
-            <div className="flex gap-2">
-              <p>{msg.username}</p>
-              <p>{msg.message}</p>
-            </div>
+            <>
+              <div className="flex gap-2 lg:gap-5 xl:gap-10  items-center  ">
+                <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
+                  <p
+                    className=" text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap"
+                    style={{
+                      color: websiteTheme.textColor,
+                    }}
+                  >
+                    {msg.username}
+                  </p>
+                  <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
+                    <img
+                      src="https://img.freepik.com/premium-photo/cool-guy-anime-style-character_677433-311.jpg"
+                      className=" object-cover w-full h-full"
+                    />
+                  </div>
+                </div>
+                <div className="  w-[70%] lg:w-[60%]">
+                  <p className=" text-[13px] lg:text-[18px] xl:text-[20px]">
+                    {msg.message}
+                  </p>
+                </div>
+              </div>
+              <div className=" w-[100%] mx-auto h-[1px] bg-gradient-to-r from-[#0000ff] via-[#ffffff] to-[#0000ff] " />
+            </>
           ))}
+          <div ref={messagesEndRef} />
         </div>
         <AnimatePresence initial={false}>
-          {newMessage.map((msg, index) => (
+          {newMessage.map((msg) => (
             <MessageComponent
               message={msg.message}
               username={msg.username}

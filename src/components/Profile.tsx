@@ -3,28 +3,28 @@ import { websiteThemeState } from "../atoms/website-theme";
 import Navbar from "./Navbar";
 import defaultProfilePic from "../assets/bottle.png";
 import { useState } from "react";
-import errorIcon from "../assets/error.png";
+// import errorIcon from "../assets/error.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { walletAddressState } from "../atoms/wallet";
 const Profile = () => {
   const websiteTheme = useRecoilValue(websiteThemeState);
   const [userName, setUserName] = useState("");
-  const [showError, setShowError] = useState(false);
+  // const [showError, setShowError] = useState(false);
 
   const walletAddress = useRecoilValue(walletAddressState);
 
   const validateUsername = async () => {
-    // try {
-    //   const result = await axios.post("http://localhost:3000/api/profile", {
-    //     walletAddress,
-    //     username: userName,
-    //   });
-    //   const data =  result.data;
-    //   console.log(data);
-    // } catch (err) {
-    //   console.log(err);
-    // }
+    try {
+      const result = await axios.post("http://localhost:3000/api/profile", {
+        walletAddress,
+        username: userName,
+      });
+      const data =  result.data;
+      console.log(data);
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
@@ -60,12 +60,12 @@ const Profile = () => {
             />
           </div>
         </div>
-        {showError && (
+        {/* {showError && (
           <div className=" flex gap-2 items-center justify-center ">
             <img src={errorIcon} />
             <p>name taken try something else</p>
           </div>
-        )}
+        )} */}
         <button
           onClick={validateUsername}
           className={` border border-white p-2 lg:p-5 uppercase bg-white text-[#0000ff] w-[320px] lg:w-[450px] text-[15px] lg:text-[20px] ${
