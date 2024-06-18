@@ -20,6 +20,7 @@ const App: React.FC = () => {
 
   useEffect(() => {
     audioRef.current!.play();
+    
     const walletAddressFromLocalStorage = localStorage.getItem("walletAddress");
     if (walletAddressFromLocalStorage) {
       {
