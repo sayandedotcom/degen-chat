@@ -7,13 +7,13 @@ import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 import { motion, AnimatePresence } from "framer-motion";
-import { MessageComponent } from "../src/components/Message";
 import { useRecoilState } from "recoil";
 import { userProfilePicState } from "./atoms/users";
 import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
 import messageNotification from "./assets/message_notification.mp3";
 import { userNameState } from "./atoms/users";
+import Focused from "./components/message animations/Focused";
 
 interface Message {
   _id: any;
@@ -47,7 +47,6 @@ const Chat = () => {
   const [profilePicState, setProfilePicState] =
     useRecoilState(userProfilePicState);
   const notificationRef = useRef<HTMLAudioElement | null>(null);
-  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const loadUserProfile = async () => {
@@ -124,13 +123,9 @@ const Chat = () => {
     transition: { type: "spring", stiffness: 400, damping: 10 },
   };
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  };
+ 
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [newMessage, initialMessages]);
+ 
 
   return (
     <div
@@ -154,53 +149,7 @@ const Chat = () => {
       </div>
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto mb-[10px]">
-        {/* <div className="w-full h-[10%] border opacity-100 z-100"></div> */}
-
-        <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
-          {initialMessages.map((msg: InitialMessage) => (
-            <>
-              <div className="flex gap-2 lg:gap-5 xl:gap-10  items-center  ">
-                <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
-                  <p
-                    className=" text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap"
-                    style={{
-                      color: websiteTheme.textColor,
-                    }}
-                  >
-                    {msg.username}
-                  </p>
-                  <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
-                    <img
-                      src={msg.profilePic}
-                      className=" object-cover w-full h-full"
-                    />
-                  </div>
-                </div>
-                <div className="  w-[70%] lg:w-[60%]">
-                  <p className=" text-[13px] lg:text-[18px] xl:text-[20px]">
-                    {msg.message}
-                  </p>
-                </div>
-              </div>
-              <div
-                className="w-[100%] mx-auto h-[1px]"
-                style={{
-                  backgroundImage: `linear-gradient(to right , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
-                }}
-              />
-            </>
-          ))}
-          <div ref={messagesEndRef} />
-        </div>
-        <AnimatePresence initial={false}>
-          {newMessage.map((msg) => (
-            <MessageComponent
-              message={msg.message}
-              username={msg.username}
-              key={msg._id}
-            />
-          ))}
-        </AnimatePresence>
+        <Focused initialMessages={initialMessages} newMessage={newMessage} />
       </div>
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
