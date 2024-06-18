@@ -13,12 +13,15 @@ import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
 import messageNotification from "./assets/message_notification.mp3";
 import { userNameState } from "./atoms/users";
-import Focused from "./components/message animations/Focused";
+// import Focused from "./components/message-animations/Focused";
+import Equator from "./components/message-animations/Equator";
+import Focused from "./components/message-animations/Focused";
 
 interface Message {
   _id: any;
   message: string;
   username: string;
+  profilePic: string;
 }
 interface InitialMessage {
   _id: any;
@@ -123,10 +126,6 @@ const Chat = () => {
     transition: { type: "spring", stiffness: 400, damping: 10 },
   };
 
- 
-
- 
-
   return (
     <div
       style={{
@@ -148,8 +147,8 @@ const Chat = () => {
         </audio>
       </div>
       {/* -------------------------------------- */}
-      <div className="relative h-[75%] overflow-y-auto mb-[10px]">
-        <Focused initialMessages={initialMessages} newMessage={newMessage} />
+      <div className="relative h-[75%] overflow-y-auto mb-[10px]  w-full">
+        <Equator initialMessages={initialMessages} newMessage={newMessage} />
       </div>
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
@@ -160,7 +159,7 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[70%] lg:w-[40%] xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black"
+              className="w-[70%] lg:w-[40%] xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black z-10"
             >
               <div
                 className={`${
