@@ -8,7 +8,8 @@ import SettingsClosed from "./components/SettingsClosed";
 const socket = io("http://localhost:3000");
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageComponent } from "../src/components/Message";
-import { useRecoilState, useRecoilValue } from "recoil";
+import { useRecoilState } from "recoil";
+import { userProfilePicState } from "./atoms/users";
 import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
 import messageNotification from "./assets/message_notification.mp3";
@@ -18,6 +19,12 @@ interface Message {
   _id: any;
   message: string;
   username: string;
+}
+interface InitialMessage {
+  _id: any;
+  message: string;
+  username: string;
+  profilePic: string;
 }
 interface Settings {
   visual: string;
@@ -34,13 +41,33 @@ const Chat = () => {
     motion: "chaos",
   });
   const [websiteTheme, setWebsiteTheme] = useRecoilState(websiteThemeState);
-  const [initialMessages, setInitialMessages] = useState<Message[]>([]);
+  const [initialMessages, setInitialMessages] = useState<InitialMessage[]>([]);
   const [newMessage, setNewMessage] = useState<Message[]>([]);
-  const userName = useRecoilValue(userNameState);
+  const [userName, setUserName] = useRecoilState(userNameState);
+  const [profilePicState, setProfilePicState] =
+    useRecoilState(userProfilePicState);
   const notificationRef = useRef<HTMLAudioElement | null>(null);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    const loadUserProfile = async () => {
+      const wAddress = localStorage.getItem("walletAddress");
+      try {
+        const response = await axios.get(
+          `http://localhost:3000/api/user-profile?walletAddress=${wAddress}`
+        );
+        const data = response.data;
+        if (data.username) {
+          setUserName(data.username);
+        }
+        if (data.profilePic) {
+          setProfilePicState(data.profilePic);
+        }
+      } catch (err: any) {
+        console.log(err.message);
+      }
+    };
+    loadUserProfile();
     const loadInitialMessages = async () => {
       try {
         const response = await axios.get(
@@ -75,6 +102,7 @@ const Chat = () => {
       socket.emit("sendMessage", {
         username: userName,
         message: currentUserMessage,
+        profilePic: profilePicState,
       });
       setCurrentUserMessage("");
     }
@@ -129,7 +157,7 @@ const Chat = () => {
         {/* <div className="w-full h-[10%] border opacity-100 z-100"></div> */}
 
         <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
-          {initialMessages.map((msg: Message) => (
+          {initialMessages.map((msg: InitialMessage) => (
             <>
               <div className="flex gap-2 lg:gap-5 xl:gap-10  items-center  ">
                 <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
@@ -143,7 +171,7 @@ const Chat = () => {
                   </p>
                   <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
                     <img
-                      src="https://img.freepik.com/premium-photo/cool-guy-anime-style-character_677433-311.jpg"
+                      src={msg.profilePic}
                       className=" object-cover w-full h-full"
                     />
                   </div>
@@ -154,7 +182,12 @@ const Chat = () => {
                   </p>
                 </div>
               </div>
-              <div className=" w-[100%] mx-auto h-[1px] bg-gradient-to-r from-[#0000ff] via-[#ffffff] to-[#0000ff] " />
+              <div
+                className="w-[100%] mx-auto h-[1px]"
+                style={{
+                  backgroundImage: `linear-gradient(to right , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
+                }}
+              />
             </>
           ))}
           <div ref={messagesEndRef} />

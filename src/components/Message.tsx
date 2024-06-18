@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { useRecoilValue } from "recoil";
 import { websiteThemeState } from "../atoms/website-theme";
+import { userProfilePicState } from "../atoms/users";
 
 interface Message {
   message: string;
@@ -8,6 +9,7 @@ interface Message {
 }
 export const MessageComponent: React.FC<Message> = ({ username, message }) => {
   const websiteTheme = useRecoilValue(websiteThemeState);
+  const profilePic = useRecoilValue(userProfilePicState);
   return (
     <motion.div
       className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]"
@@ -27,10 +29,7 @@ export const MessageComponent: React.FC<Message> = ({ username, message }) => {
             {username}
           </p>
           <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
-            <img
-              src="https://img.freepik.com/premium-photo/cool-guy-anime-style-character_677433-311.jpg"
-              className=" object-cover w-full h-full"
-            />
+            <img src={profilePic} className=" object-cover w-full h-full" />
           </div>
         </div>
         <div className="  w-[70%] lg:w-[60%]">
@@ -39,7 +38,12 @@ export const MessageComponent: React.FC<Message> = ({ username, message }) => {
           </p>
         </div>
       </div>
-      <div className=" w-[100%] mx-auto h-[1px] bg-gradient-to-r from-[#0000ff] via-[#ffffff] to-[#0000ff] " />
+      <div
+        className=" w-[100%] mx-auto h-[1px]  "
+        style={{
+          backgroundImage: `linear-gradient(to right , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
+        }}
+      />
     </motion.div>
   );
 };
