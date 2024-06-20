@@ -37,9 +37,12 @@ const Focused = ({
   return (
     <>
       <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
-        {initialMessages.map((msg: InitialMessage) => (
+        {initialMessages.map((msg: InitialMessage, index: number) => (
           <>
-            <div className="flex gap-2 lg:gap-5 xl:gap-10  items-center  ">
+            <div
+              className="flex gap-2 lg:gap-5 xl:gap-10  items-center  "
+              key={index}
+            >
               <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
                 <p
                   className=" text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap"

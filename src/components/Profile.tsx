@@ -1,12 +1,14 @@
 import { useRecoilState, useRecoilValue, useSetRecoilState } from "recoil";
 import { websiteThemeState } from "../atoms/website-theme";
 import Navbar from "./Navbar";
-import defaultProfilePic from "../assets/bottle.png";
 import { useState } from "react";
 import errorIcon from "../assets/error.png";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { userNameState, userProfilePicState } from "../atoms/users";
+import { MdDriveFolderUpload } from "react-icons/md";
+
+const BASE_URI = import.meta.env.VITE_BASE_URI;
 
 const Profile = () => {
   const websiteTheme = useRecoilValue(websiteThemeState);
@@ -15,7 +17,8 @@ const Profile = () => {
   const [showSuccess, setShowSuccess] = useState(false);
   const [showError, setShowError] = useState(false);
   const [profilePic, setProfilePic] = useState(null);
-  const [showProfilePicError, setShowProfilePicError] = useState(false);
+  const [, setShowProfilePicError] = useState(false);
+  const [showFileUploadSuccess, setShowFileUploadSuccess] = useState(false);
   const [profilePicFromS3, setProfilePicFromS3] =
     useRecoilState(userProfilePicState);
 
@@ -25,7 +28,7 @@ const Profile = () => {
     try {
       setShowError(false);
       const result = await axios.post(
-        `http://localhost:3000/api/profile?walletAddress=${walletAddress}&username=${userName}`
+        `${BASE_URI}/api/profile?walletAddress=${walletAddress}&username=${userName}`
       );
       setUserName("");
       if (result.status === 201) {
@@ -62,7 +65,7 @@ const Profile = () => {
 
     try {
       const response = await axios.post(
-        `http://localhost:3000/api/profile-pic?walletAddress=${walletAddress}`,
+        `${BASE_URI}/api/profile-pic?walletAddress=${walletAddress}`,
         formData,
         {
           headers: {
@@ -71,7 +74,9 @@ const Profile = () => {
         }
       );
       const data = response.data;
-      console.log(data.data.Location);
+      setProfilePicFromS3(data.data.Location);
+      setShowFileUploadSuccess(true);
+      setProfilePic(data.data.Location);
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -91,13 +96,30 @@ const Profile = () => {
       </div>
 
       <div className="   h-[90%] flex flex-col items-center justify-center relative top-[-100px] gap-5 lg:gap-10 w-full ">
-        <div className="  border border-white h-[100px] w-[100px] lg:h-[200px] lg:w-[200px] rounded-[100%] flex items-center justify-center ">
-          <img
-            src={profilePic ? profilePic : profilePicFromS3}
-            className=" w-[50px] lg:w-[100px] h-auto "
-          />
-          <form onSubmit={handleSubmit}>
-            <input type="file" accept="image/*" onChange={handleFileChange} />
+        <div className=" relative group  border border-white h-[100px] w-[100px] lg:h-[200px] lg:w-[200px] rounded-[100%] flex items-center justify-center ">
+          <div className=" rounded-full h-full w-full overflow-hidden ">
+            <img
+              src={profilePic ? profilePic : profilePicFromS3}
+              className=" object-cover w-full h-full"
+            />
+          </div>
+          <form
+            onSubmit={handleSubmit}
+            className=" absolute  top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity duration-300 w-full h-full"
+          >
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              id="fileInput"
+              onChange={handleFileChange}
+            />
+            <label
+              htmlFor="fileInput"
+              className="flex items-center justify-center cursor-pointer w-full h-full"
+            >
+              <MdDriveFolderUpload className=" w-full h-auto opacity-0" />
+            </label>
           </form>
         </div>
         <div className=" flex items-center gap-2 ">
@@ -130,6 +152,11 @@ const Profile = () => {
         {showSuccess && (
           <div className=" flex gap-2 items-center justify-center ">
             <p>username added successfully</p>
+          </div>
+        )}
+        {showFileUploadSuccess && (
+          <div className=" flex gap-2 items-center justify-center ">
+            <p>Profile Picture updated successfully</p>
           </div>
         )}
         <button

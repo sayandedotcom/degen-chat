@@ -5,7 +5,7 @@ import io from "socket.io-client";
 import { handleSettingsSave } from "./utils/handleSettings";
 import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
-const socket = io("http://localhost:3000");
+const socket = io(import.meta.env.VITE_BASE_URI);
 import { motion, AnimatePresence } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { userProfilePicState } from "./atoms/users";
@@ -13,10 +13,15 @@ import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
 import messageNotification from "./assets/message_notification.mp3";
 import { userNameState } from "./atoms/users";
-// import Focused from "./components/message-animations/Focused";
 import Equator from "./components/message-animations/Equator";
 import Focused from "./components/message-animations/Focused";
-
+import { websiteAudioState } from "./atoms/website-theme";
+import winMusic from "./assets/win.mp3";
+import onMusic from "./assets/on.mp3";
+import slideMusic from "./assets/slide.mp3";
+import synthMusic from "./assets/synth.mp3";
+import ambientMusic from "./assets/ambient.mp3";
+const BASE_URI = import.meta.env.VITE_BASE_URI;
 interface Message {
   _id: any;
   message: string;
@@ -41,7 +46,7 @@ const Chat = () => {
   const [settingsModal, setSettingsModal] = useState<Settings>({
     visual: "rem",
     audio: "win",
-    motion: "chaos",
+    motion: "focused",
   });
   const [websiteTheme, setWebsiteTheme] = useRecoilState(websiteThemeState);
   const [initialMessages, setInitialMessages] = useState<InitialMessage[]>([]);
@@ -50,13 +55,16 @@ const Chat = () => {
   const [profilePicState, setProfilePicState] =
     useRecoilState(userProfilePicState);
   const notificationRef = useRef<HTMLAudioElement | null>(null);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [websiteAudio, setWebsiteAudio] = useRecoilState(websiteAudioState);
 
   useEffect(() => {
+    audioRef.current!.play();
     const loadUserProfile = async () => {
       const wAddress = localStorage.getItem("walletAddress");
       try {
         const response = await axios.get(
-          `http://localhost:3000/api/user-profile?walletAddress=${wAddress}`
+          `${BASE_URI}/api/user-profile?walletAddress=${wAddress}`
         );
         const data = response.data;
         if (data.username) {
@@ -72,9 +80,7 @@ const Chat = () => {
     loadUserProfile();
     const loadInitialMessages = async () => {
       try {
-        const response = await axios.get(
-          "http://localhost:3000/api/initialMessages"
-        );
+        const response = await axios.get(`${BASE_URI}/api/initialMessages`);
         const messages = response.data;
         if (messages) {
           setInitialMessages(messages);
@@ -115,16 +121,54 @@ const Chat = () => {
       handleSendMessage();
     }
   };
+  const renderComponent = (settingsModal: any) => {
+    switch (settingsModal.motion) {
+      case "focused":
+        return (
+          <Focused initialMessages={initialMessages} newMessage={newMessage} />
+        );
+      case "equator":
+        return (
+          <Equator initialMessages={initialMessages} newMessage={newMessage} />
+        );
+    }
+  };
 
   const handleSave = () => {
     setIsSettingsOpen(false);
+    switch (settingsModal.audio) {
+      case "win":
+        setWebsiteAudio(winMusic);
+        break;
+      case "slide":
+        setWebsiteAudio(slideMusic);
+        break;
+      case "on":
+        setWebsiteAudio(onMusic);
+        break;
+      case "synth":
+        console.log("here");
+        setWebsiteAudio(synthMusic);
+        break;
+      case "ambient":
+        setWebsiteAudio(ambientMusic);
+        break;
+    }
     handleSettingsSave(settingsModal, websiteTheme, setWebsiteTheme);
+    console.log(websiteAudio);
   };
 
   const clickAnimation = {
     scale: 0.9,
     transition: { type: "spring", stiffness: 400, damping: 10 },
   };
+
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.src = websiteAudio;
+      audioRef.current.play();
+    }
+  }, [websiteAudio]);
 
   return (
     <div
@@ -134,6 +178,12 @@ const Chat = () => {
       }}
       className={`w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
     >
+      <div>
+        <audio ref={audioRef} loop>
+          <source src={websiteAudio} type="audio/mpeg" />
+          Your browser does not support the audio element.
+        </audio>
+      </div>
       <div className="h-[10%]">
         <div className="w-[90%] flex justify-end">
           <Navbar websiteTheme />
@@ -148,7 +198,11 @@ const Chat = () => {
       </div>
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto mb-[10px]  w-full">
-        <Equator initialMessages={initialMessages} newMessage={newMessage} />
+        {settingsModal.motion === "focused" ? (
+          <Focused initialMessages={initialMessages} newMessage={newMessage} />
+        ) : (
+          <Equator initialMessages={initialMessages} newMessage={newMessage} />
+        )}
       </div>
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">

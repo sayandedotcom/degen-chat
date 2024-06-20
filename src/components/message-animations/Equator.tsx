@@ -16,10 +16,6 @@ interface InitialMessage {
   profilePic: string;
 }
 
-interface MarqueeProps {
-  direction: "left" | "right" | "up" | "down";
-}
-
 const Slider = ({
   messages,
   scrollDirection,
@@ -35,8 +31,38 @@ const Slider = ({
       delay={0}
       autoFill
       direction={scrollDirection}
+      key={messages.map((msg) => msg._id).join()}
     >
-      <div className="flex  gap-[30px] w-full  ">
+      <div className="flex gap-[30px] w-full">
+        {messages.map((msg: Message) => (
+          <>
+            <div className=" flex items-center gap-[10px] ">
+              <p
+                className=" text-[12px] lg:text-[14px] xl:text-[16px] "
+                style={{
+                  color: websiteTheme.textColor,
+                }}
+              >
+                {msg.username}
+              </p>
+              <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
+                <img
+                  src={msg.profilePic}
+                  className=" object-cover w-full h-full"
+                />
+              </div>
+              <p className="  text-[13px] lg:text-[18px] xl:text-[20px] max-w-[550px]  my-auto">
+                {msg.message}
+              </p>
+            </div>
+            <div
+              className="w-[1px] lg:w-[1px] mx-auto h-[50px] lg:h-[70px]"
+              style={{
+                backgroundImage: `linear-gradient(to bottom , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
+              }}
+            />
+          </>
+        ))}
         {messages.map((msg: Message) => (
           <>
             <div className=" flex items-center gap-[10px]  ">
@@ -54,12 +80,12 @@ const Slider = ({
                   className=" object-cover w-full h-full"
                 />
               </div>
-              <p className="  text-[13px] lg:text-[18px] xl:text-[20px]">
+              <p className="  text-[13px] lg:text-[18px] xl:text-[20px] max-w-[500px]  ">
                 {msg.message}
               </p>
             </div>
             <div
-              className="w-[1px] lg:w-[1px] mx-auto h-[50px] lg:h-[70px]"
+              className="w-[1px] lg:w-[1px] mx-auto h-[50px] lg:h-[90px] "
               style={{
                 backgroundImage: `linear-gradient(to bottom , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
               }}
@@ -71,7 +97,7 @@ const Slider = ({
   );
 };
 
-const Equator = ({
+const GlobalChat = ({
   initialMessages,
   newMessage,
 }: {
@@ -79,38 +105,36 @@ const Equator = ({
   newMessage: Message[];
 }) => {
   const websiteTheme = useRecoilValue(websiteThemeState);
+  const [allMessages, setAllMessages] = useState<Message[]>([]);
 
-  const [allMessages, setAllMessages] = useState<Message[]>([
-    ...initialMessages,
-  ]);
-  // console.log(initialMessages)
+  useEffect(() => {
+    setAllMessages([...initialMessages]);
+  }, [initialMessages]);
 
-  // useEffect(() => {
-  //   setAllMessages((prevMessages) => {
-  //     const updatedMessages = [...prevMessages, ...newMessage];
-  //     if (updatedMessages.length > 50) {
-  //       updatedMessages.splice(0, updatedMessages.length - 50);
-  //     }
-  //     return updatedMessages;
-  //   });
-  // }, [newMessage, initialMessages]);
+  useEffect(() => {
+    setAllMessages((prevMessages) => {
+      const updatedMessages = [...prevMessages, ...newMessage];
+      if (updatedMessages.length > 50) {
+        updatedMessages.splice(0, updatedMessages.length - 50);
+      }
+      return updatedMessages;
+    });
+  }, [newMessage]);
 
   const distributeMessagesIntoRows = (messages: Message[]) => {
     const rows: Message[][] = [[], [], [], []];
-    messages.forEach((message, index) => {
-      if (message) {
-        rows[index % 4].push(message);
-      }
-    });
-    console.log(rows);
+    const chunkSize = Math.ceil(messages.length / 4);
+    for (let i = 0; i < messages.length; i++) {
+      const chunkIndex = Math.floor(i / chunkSize);
+      rows[chunkIndex].push(messages[i]);
+    }
     return rows;
   };
 
-  const rows = distributeMessagesIntoRows(initialMessages);
-  console.log(rows[0]);
+  const rows = distributeMessagesIntoRows(allMessages);
 
   return (
-    <div className=" w-full flex flex-col justify-end h-full gap-[40px] ">
+    <div className="w-full flex flex-col justify-end h-full gap-[40px] ">
       <Slider messages={rows[0]} scrollDirection="left" />
       <div
         className="w-[50%] h-[1px]"
@@ -139,4 +163,4 @@ const Equator = ({
   );
 };
 
-export default Equator;
+export default GlobalChat;

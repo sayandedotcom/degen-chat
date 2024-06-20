@@ -16,11 +16,16 @@ const App: React.FC = () => {
   const [walletAddress, setWalletAddressState] =
     useRecoilState(walletAddressState);
 
+  const [showWalletTransactionsError, setShowWalletTransactionsError] =
+    useState(false);
+
+  const [showVerifying, setShowVerifying] = useState(false);
+
   const navigate = useNavigate();
 
   useEffect(() => {
     audioRef.current!.play();
-    
+
     const walletAddressFromLocalStorage = localStorage.getItem("walletAddress");
     if (walletAddressFromLocalStorage) {
       {
@@ -106,32 +111,27 @@ const App: React.FC = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full flex flex-col gap-2"
+              className={`bg-white ${
+                showVerifying ? "opacity-60" : "opacity-100"
+              } coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full flex flex-col gap-2`}
             >
-              {/* <p className=" text-center text-[15px] lg:text-[24px]">Select</p>
-              <div className=" w-[5%] h-[2px] mx-auto bg-[#0000FF]"></div>
-              <div className=" flex flex-col gap-3 lg:gap-5">
-                <button
-                  className=" flex justify-between w-[80%] mx-auto uppercase"
-                  onClick={handlePhantomWalletConnect}
-                >
-                  <div className=" flex gap-3 items-center">
-                    <PhantomIcon />
-                    <p>Phantom</p>
-                  </div>
-                  <ArrowIcon />
-                </button>
-                <div className=" mx-auto w-[80%] bg-[#0000ff] h-[2px]" />
-                <button className=" flex justify-between w-[80%] mx-auto uppercase">
-                  <div className=" flex gap-3 items-center">
-                    <SolflareIcon />
-                    <p>solflare</p>
-                  </div>
-                  <ArrowIcon />
-                </button>
-              </div> */}
               <div className=" mx-auto">
-                <SolanaConnect />
+                {showVerifying ? (
+                  <>
+                    {showWalletTransactionsError ? (
+                      <p>access denied</p>
+                    ) : (
+                      <p>verifying...</p>
+                    )}
+                  </>
+                ) : (
+                  <SolanaConnect
+                    setShowVerifying={setShowVerifying}
+                    setShowWalletTransactionsError={
+                      setShowWalletTransactionsError
+                    }
+                  />
+                )}
               </div>
             </motion.div>
           ) : (

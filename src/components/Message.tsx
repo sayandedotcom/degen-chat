@@ -16,7 +16,7 @@ export const MessageComponent: React.FC<Message> = ({ username, message }) => {
       initial={{ opacity: 0, y: 50 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -50 }}
-      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+      transition={{ type: "spring", stiffness: 100, damping: 20 }}
     >
       <div className="flex gap-2 lg:gap-5 xl:gap-10  items-center mt-2 lg:mt-5 xl:mt-5 ">
         <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
@@ -38,9 +38,12 @@ export const MessageComponent: React.FC<Message> = ({ username, message }) => {
           </p>
         </div>
       </div>
-      <div className=" w-[100%] mx-auto h-[1px]  "style={{
-                  backgroundImage: `linear-gradient(to right , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
-                }} />
+      <div
+        className=" w-[100%] mx-auto h-[1px]  "
+        style={{
+          backgroundImage: `linear-gradient(to right , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
+        }}
+      />
     </motion.div>
   );
 };
