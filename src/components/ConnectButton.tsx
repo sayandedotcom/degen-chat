@@ -1,4 +1,4 @@
-import { FC, useEffect } from "react";
+import {  useEffect } from "react";
 import { useWallet } from "@solana/wallet-adapter-react";
 import {
   WalletModalProvider,
@@ -9,7 +9,7 @@ import { Connection, PublicKey } from "@solana/web3.js";
 
 import("@solana/wallet-adapter-react-ui/styles.css");
 
-const RPC_URL = import.meta.env.RPC_URL;
+// const RPC_URL = import.meta.env.RPC_URL;
 
 interface SolanaConnectProps {
   setShowVerifying: React.Dispatch<React.SetStateAction<boolean>>;
@@ -19,7 +19,9 @@ export const SolanaConnect: React.FC<SolanaConnectProps> = ({
   setShowVerifying,
   setShowWalletTransactionsError,
 }) => {
-  const connection = new Connection("https://solana-devnet.g.alchemy.com/v2/CwAHzUC5jUzVVsJIbIsbf6r_BbbiiDBu");
+  const connection = new Connection(
+    "https://solana-devnet.g.alchemy.com/v2/CwAHzUC5jUzVVsJIbIsbf6r_BbbiiDBu"
+  );
   const navigate = useNavigate();
   const { publicKey } = useWallet();
   if (publicKey) {

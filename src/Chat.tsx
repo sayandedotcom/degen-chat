@@ -121,18 +121,18 @@ const Chat = () => {
       handleSendMessage();
     }
   };
-  const renderComponent = (settingsModal: any) => {
-    switch (settingsModal.motion) {
-      case "focused":
-        return (
-          <Focused initialMessages={initialMessages} newMessage={newMessage} />
-        );
-      case "equator":
-        return (
-          <Equator initialMessages={initialMessages} newMessage={newMessage} />
-        );
-    }
-  };
+  // const renderComponent = (settingsModal: any) => {
+  //   switch (settingsModal.motion) {
+  //     case "focused":
+  //       return (
+  //         <Focused initialMessages={initialMessages} newMessage={newMessage} />
+  //       );
+  //     case "equator":
+  //       return (
+  //         <Equator initialMessages={initialMessages} newMessage={newMessage} />
+  //       );
+  //   }
+  // };
 
   const handleSave = () => {
     setIsSettingsOpen(false);

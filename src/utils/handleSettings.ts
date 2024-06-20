@@ -3,8 +3,8 @@ interface Settings {
   audio: string;
   motion: string;
 }
-import { useSetRecoilState } from "recoil";
-import { websiteAudioState } from "../atoms/website-theme";
+// import { useSetRecoilState } from "recoil";
+// import { websiteAudioState } from "../atoms/website-theme";
 
 export const handleSettingsSave = (
   settingsState: Settings,
