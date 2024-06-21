@@ -38,7 +38,7 @@ export const SolanaConnect: React.FC<SolanaConnectProps> = ({
           );
           const transactionsCount = confirmedSignatures.length;
           console.log(transactionsCount);
-          if (transactionsCount > 10) {
+          if (transactionsCount > 1) {
             return navigate("/chat");
           } else {
             setShowWalletTransactionsError(true);
