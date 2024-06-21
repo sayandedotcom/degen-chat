@@ -2,7 +2,11 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
-    extend: {},
+    extend: {
+      cursor:{
+        'cursor-pointer': 'url(./src/assets/cursor.svg), pointer',
+      }
+    },
     fontFamily: {
       jbm: ["JetBrains Mono", "sans-serif"],
     },

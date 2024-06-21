@@ -25,6 +25,7 @@ const Profile = () => {
   const walletAddress = localStorage.getItem("walletAddress");
 
   const validateUsername = async () => {
+    
     try {
       setShowError(false);
       const result = await axios.post(
