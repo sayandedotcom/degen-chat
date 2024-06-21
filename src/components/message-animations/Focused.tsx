@@ -23,6 +23,7 @@ const Focused = ({
   initialMessages: InitialMessage[];
   newMessage: Message[];
 }) => {
+  
   const websiteTheme = useRecoilValue(websiteThemeState);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -37,7 +38,9 @@ const Focused = ({
   return (
     <>
       <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
-        {initialMessages.map((msg: InitialMessage, index: number) => (
+        {
+         
+        initialMessages?.map((msg: InitialMessage, index: number) => (
           <>
             <div
               className="flex gap-2 lg:gap-5 xl:gap-10  items-center  "

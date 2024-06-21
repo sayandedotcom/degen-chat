@@ -22,6 +22,7 @@ import slideMusic from "./assets/slide.mp3";
 import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
 const BASE_URI = import.meta.env.VITE_BASE_URI;
+console.log(BASE_URI)
 interface Message {
   _id: any;
   message: string;
@@ -81,6 +82,7 @@ const Chat = () => {
     const loadInitialMessages = async () => {
       try {
         const response = await axios.get(`${BASE_URI}/api/initialMessages`);
+        // console.log(`${BASE_URI}/api/initialMessages`)
         const messages = response.data;
         if (messages) {
           setInitialMessages(messages);
@@ -198,11 +200,19 @@ const Chat = () => {
       </div>
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto mb-[10px]  w-full">
-        {settingsModal.motion === "focused" ? (
-          <Focused initialMessages={initialMessages} newMessage={newMessage} />
-        ) : (
-          <Equator initialMessages={initialMessages} newMessage={newMessage} />
-        )}
+        {settingsModal.motion === "focused"
+          ? initialMessages.length > 0 && (
+              <Focused
+                initialMessages={initialMessages}
+                newMessage={newMessage}
+              />
+            )
+          : initialMessages.length > 0 && (
+              <Equator
+                initialMessages={initialMessages}
+                newMessage={newMessage}
+              />
+            )}
       </div>
       {/* -------------------------------------- */}
       <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
