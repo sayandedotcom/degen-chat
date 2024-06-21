@@ -75,7 +75,7 @@ const Chat = () => {
           setProfilePicState(data.profilePic);
         }
       } catch (err: any) {
-        console.log(err.message);
+        console.log("profile-error",err.message);
       }
     };
     loadUserProfile();
@@ -88,7 +88,7 @@ const Chat = () => {
           setInitialMessages(messages);
         }
       } catch (err) {
-        console.log(err);
+        console.log("initial-messages-error",err);
       }
     };
     loadInitialMessages();
