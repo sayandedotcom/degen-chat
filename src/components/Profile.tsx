@@ -8,7 +8,7 @@ import axios from "axios";
 import { userNameState, userProfilePicState } from "../atoms/users";
 import { MdDriveFolderUpload } from "react-icons/md";
 
-const BASE_URI = import.meta.env.VITE_BASE_URI;
+const BASE_URI = "http://65.0.61.181:3000";
 
 const Profile = () => {
   const websiteTheme = useRecoilValue(websiteThemeState);
@@ -25,7 +25,6 @@ const Profile = () => {
   const walletAddress = localStorage.getItem("walletAddress");
 
   const validateUsername = async () => {
-    
     try {
       setShowError(false);
       const result = await axios.post(
