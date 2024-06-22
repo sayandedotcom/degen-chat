@@ -21,7 +21,7 @@ import onMusic from "./assets/on.mp3";
 import slideMusic from "./assets/slide.mp3";
 import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
-const BASE_URI = "http://65.0.61.181:3000";
+const BASE_URI = "https://degen-chat-server.onrender.com";
 console.log(BASE_URI);
 interface Message {
   _id: any;
