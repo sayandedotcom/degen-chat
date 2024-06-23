@@ -2,7 +2,6 @@ import { useEffect, useState, useRef } from "react";
 import Navbar from "./components/Navbar";
 import { AiOutlineSend } from "react-icons/ai";
 import io from "socket.io-client";
-import { handleSettingsSave } from "./utils/handleSettings";
 import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
 const socket = io(import.meta.env.VITE_BASE_URI);
@@ -75,20 +74,19 @@ const Chat = () => {
           setProfilePicState(data.profilePic);
         }
       } catch (err: any) {
-        console.log("profile-error",err.message);
+        console.log("profile-error", err.message);
       }
     };
     loadUserProfile();
     const loadInitialMessages = async () => {
       try {
         const response = await axios.get(`${BASE_URI}/api/initialMessages`);
-        // console.log(`${BASE_URI}/api/initialMessages`)
         const messages = response.data;
         if (messages) {
           setInitialMessages(messages);
         }
       } catch (err) {
-        console.log("initial-messages-error",err);
+        console.log("initial-messages-error", err);
       }
     };
     loadInitialMessages();
@@ -123,41 +121,9 @@ const Chat = () => {
       handleSendMessage();
     }
   };
-  // const renderComponent = (settingsModal: any) => {
-  //   switch (settingsModal.motion) {
-  //     case "focused":
-  //       return (
-  //         <Focused initialMessages={initialMessages} newMessage={newMessage} />
-  //       );
-  //     case "equator":
-  //       return (
-  //         <Equator initialMessages={initialMessages} newMessage={newMessage} />
-  //       );
-  //   }
-  // };
 
   const handleSave = () => {
     setIsSettingsOpen(false);
-    switch (settingsModal.audio) {
-      case "win":
-        setWebsiteAudio(winMusic);
-        break;
-      case "slide":
-        setWebsiteAudio(slideMusic);
-        break;
-      case "on":
-        setWebsiteAudio(onMusic);
-        break;
-      case "synth":
-        console.log("here");
-        setWebsiteAudio(synthMusic);
-        break;
-      case "ambient":
-        setWebsiteAudio(ambientMusic);
-        break;
-    }
-    handleSettingsSave(settingsModal, websiteTheme, setWebsiteTheme);
-    console.log(websiteAudio);
   };
 
   const clickAnimation = {
@@ -239,9 +205,14 @@ const Chat = () => {
                   <div className="  w-full flex justify-around">
                     <div
                       className=" flex flex-col items-center "
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, visual: "rem" })
-                      }
+                      onClick={() => {
+                        setWebsiteTheme({
+                          ...websiteTheme,
+                          bgColor: "#0000FF",
+                          textColor: "#ffffff",
+                          buttonColor: "#0000FF",
+                        });
+                      }}
                     >
                       <div className="hidden lg:block bg-[#0000FF] text-white p-[5px] lg:p-2 rounded-[3px] text-[5px] lg:text-[10px] cursor-pointer ">
                         <p>dont sin</p>
@@ -261,9 +232,14 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, visual: "neo" })
-                      }
+                      onClick={() => {
+                        setWebsiteTheme({
+                          ...websiteTheme,
+                          bgColor: "#000000",
+                          textColor: "#00FF00",
+                          buttonColor: "#000000",
+                        });
+                      }}
                     >
                       <div className="hidden lg:block bg-[#000000] text-[#00FF00] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer ">
                         <p>dont sin</p>
@@ -283,9 +259,14 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, visual: "oen" })
-                      }
+                      onClick={() => {
+                        setWebsiteTheme({
+                          ...websiteTheme,
+                          bgColor: "#00FF00",
+                          textColor: "#000000",
+                          buttonColor: "#00FF00",
+                        });
+                      }}
                     >
                       <div className="hidden lg:block bg-[#00FF00] text-[#000000] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer ">
                         <p>dont sin</p>
@@ -305,9 +286,14 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, visual: "hmmm" })
-                      }
+                      onClick={() => {
+                        setWebsiteTheme({
+                          ...websiteTheme,
+                          bgColor: "#FF5959",
+                          textColor: "#ffffff",
+                          buttonColor: "#000000",
+                        });
+                      }}
                     >
                       <div className="hidden lg:block bg-[#FF5959] text-[#3D3D3D] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer">
                         <p>dont sin</p>
@@ -327,9 +313,14 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, visual: "b/w" })
-                      }
+                      onClick={() => {
+                        setWebsiteTheme({
+                          ...websiteTheme,
+                          bgColor: "#ffffff",
+                          textColor: "#000000",
+                          buttonColor: "#000000",
+                        });
+                      }}
                     >
                       <div className="hidden lg:block bg-[#ffffff] text-[#000000] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] border border-black cursor-pointer ">
                         <p>dont sin</p>
@@ -354,20 +345,18 @@ const Chat = () => {
                   <div className=" w-full flex justify-around">
                     <div
                       className=" flex flex-col items-center justify-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, audio: "win" })
-                      }
+                      onClick={() => setWebsiteAudio(winMusic)}
                     >
                       <div
                         className={`hidden lg:block  bg-[#ffffff] text-white text-[10px] p-2 border ${
-                          settingsModal.audio === "win"
+                          websiteAudio === winMusic
                             ? "border-[#0000FF]"
                             : "border-black"
                         }  h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
                       ></div>
                       <p
                         className={`text-[10px] lg:text-[16px] ${
-                          settingsModal.audio === "win"
+                          websiteAudio === winMusic
                             ? "text-[#0000FF]"
                             : "text-black"
                         } border border-black p-[4px] rounded-[2px] lg:border-none`}
@@ -378,13 +367,11 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center "
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, audio: "slide" })
-                      }
+                      onClick={() => setWebsiteAudio(slideMusic)}
                     >
                       <div
                         className={` hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
-                          settingsModal.audio === "slide"
+                          websiteAudio === slideMusic
                             ? "border-[#0000FF]"
                             : "border-black"
                         } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
@@ -392,7 +379,7 @@ const Chat = () => {
 
                       <p
                         className={` text-[10px] lg:text-[16px] border ${
-                          settingsModal.audio === "slide"
+                          websiteAudio === slideMusic
                             ? "text-[#0000FF]"
                             : "text-black"
                         } border-black p-[4px] rounded-[2px] lg:border-none`}
@@ -403,13 +390,11 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, audio: "on" })
-                      }
+                      onClick={() => setWebsiteAudio(onMusic)}
                     >
                       <div
                         className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
-                          settingsModal.audio === "on"
+                          websiteAudio === onMusic
                             ? "border-[#0000FF]"
                             : "border-black"
                         } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
@@ -417,7 +402,7 @@ const Chat = () => {
 
                       <p
                         className={` text-[10px] lg:text-[16px] border ${
-                          settingsModal.audio === "on"
+                          websiteAudio === onMusic
                             ? "text-[#0000FF]"
                             : "text-black"
                         } border-black p-[4px] rounded-[2px] lg:border-none`}
@@ -428,13 +413,11 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, audio: "synth" })
-                      }
+                      onClick={() => setWebsiteAudio(synthMusic)}
                     >
                       <div
                         className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
-                          settingsModal.audio === "synth"
+                          websiteAudio === synthMusic
                             ? "border-[#0000FF]"
                             : "border-black"
                         } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
@@ -442,7 +425,7 @@ const Chat = () => {
 
                       <p
                         className={` text-[10px] lg:text-[16px] ${
-                          settingsModal.audio === "synth"
+                          websiteAudio === synthMusic
                             ? "text-[#0000FF]"
                             : "text-black"
                         } border border-black p-[4px] rounded-[2px] lg:border-none`}
@@ -453,13 +436,11 @@ const Chat = () => {
 
                     <div
                       className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, audio: "ambient" })
-                      }
+                      onClick={() => setWebsiteAudio(ambientMusic)}
                     >
                       <div
                         className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
-                          settingsModal.audio === "ambient"
+                          websiteAudio === ambientMusic
                             ? "border-[#0000FF]"
                             : "border-black"
                         } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
@@ -467,7 +448,7 @@ const Chat = () => {
 
                       <p
                         className={` text-[10px] lg:text-[16px] ${
-                          settingsModal.audio === "ambient"
+                          websiteAudio === ambientMusic
                             ? "text-[#0000FF]"
                             : "text-black"
                         } border border-black p-[4px] rounded-[2px] lg:border-none`}
@@ -550,27 +531,7 @@ const Chat = () => {
                         equator
                       </p>
                     </div>
-                    <div
-                      className=" flex flex-col items-center"
-                      onClick={() =>
-                        setSettingsModal({ ...settingsModal, motion: "b/w" })
-                      }
-                    >
-                      <div
-                        className={`hidden lg:block bg-[#white] ${
-                          settingsModal.motion === "b/w"
-                            ? "text-[#0000FF] border border-[#0000FF]"
-                            : "text-black border border-black"
-                        }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer`}
-                      >
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                      </div>
-                      <p className=" text-[10px] lg:text-[16px] border border-black p-[4px] rounded-[2px] lg:border-none">
-                        b/w
-                      </p>
-                    </div>
+
                     <button
                       className=" lg:block lg:h-[70px] lg:w-[70px] uppercase flex items-center justify-center  text-[10px] lg:text-[16px] "
                       onClick={handleSave}

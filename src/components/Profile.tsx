@@ -8,7 +8,7 @@ import axios from "axios";
 import { userNameState, userProfilePicState } from "../atoms/users";
 import { MdDriveFolderUpload } from "react-icons/md";
 
-const BASE_URI = "https://degen-chat-server.onrender.com";
+const BASE_URI = "http://65.0.61.181:3000/";
 
 const Profile = () => {
   const websiteTheme = useRecoilValue(websiteThemeState);
