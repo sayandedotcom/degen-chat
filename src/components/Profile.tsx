@@ -8,7 +8,7 @@ import axios from "axios";
 import { userNameState, userProfilePicState } from "../atoms/users";
 import { MdDriveFolderUpload } from "react-icons/md";
 
-const BASE_URI = "http://65.0.61.181:3000/";
+const BASE_URI = "https://prithvikr.live";
 
 const Profile = () => {
   const websiteTheme = useRecoilValue(websiteThemeState);

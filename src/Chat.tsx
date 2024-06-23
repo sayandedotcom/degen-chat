@@ -4,7 +4,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import io from "socket.io-client";
 import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
-const socket = io(import.meta.env.VITE_BASE_URI);
+const socket = io('https://prithvikr.live');
 import { motion, AnimatePresence } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { userProfilePicState } from "./atoms/users";
@@ -20,8 +20,9 @@ import onMusic from "./assets/on.mp3";
 import slideMusic from "./assets/slide.mp3";
 import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
-const BASE_URI = "https://degen-chat-server.onrender.com";
-console.log(BASE_URI);
+import EquatorTest from "./components/message-animations/EquatorTest";
+const BASE_URI = "https://prithvikr.live";
+
 interface Message {
   _id: any;
   message: string;
