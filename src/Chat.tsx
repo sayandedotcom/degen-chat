@@ -12,7 +12,7 @@ import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
 import messageNotification from "./assets/message_notification.mp3";
 import { userNameState } from "./atoms/users";
-import Equator from "./components/message-animations/Equator";
+// import Equator from "./components/message-animations/Equator";
 import Focused from "./components/message-animations/Focused";
 import { websiteAudioState } from "./atoms/website-theme";
 import winMusic from "./assets/win.mp3";
@@ -20,6 +20,7 @@ import onMusic from "./assets/on.mp3";
 import slideMusic from "./assets/slide.mp3";
 import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
+import EquatorTest from "./components/message-animations/EquatorTest";
 const BASE_URI = "https://prithvikr.live";
 
 interface Message {
@@ -180,7 +181,7 @@ const Chat = () => {
               />
             )
           : initialMessages.length > 0 && (
-              <Equator
+              <EquatorTest
                 initialMessages={initialMessages}
                 newMessage={newMessage}
               />
