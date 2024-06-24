@@ -4,7 +4,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import io from "socket.io-client";
 import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
-const socket = io('https://prithvikr.live');
+const socket = io("https://prithvikr.live");
 import { motion, AnimatePresence } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { userProfilePicState } from "./atoms/users";
@@ -105,14 +105,20 @@ const Chat = () => {
     };
   }, []);
 
+
+
   const handleSendMessage = () => {
-    if (currentUserMessage.trim()) {
-      socket.emit("sendMessage", {
-        username: userName,
-        message: currentUserMessage,
-        profilePic: profilePicState,
-      });
-      setCurrentUserMessage("");
+    if (currentUserMessage.length <= 500) {
+      if (currentUserMessage.trim()) {
+        socket.emit("sendMessage", {
+          username: userName,
+          message: currentUserMessage,
+          profilePic: profilePicState,
+        });
+        setCurrentUserMessage("");
+      }
+    } else {
+      alert("Character count exceeds 500");
     }
   };
 
@@ -543,7 +549,7 @@ const Chat = () => {
               </div>
             </motion.div>
           ) : (
-            <div className="w-[70%] lg:w-[40%] xl:w-[35%] ">
+            <div className="w-[60%] lg:w-[40%] xl:w-[35%] ">
               <motion.input
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}

@@ -23,7 +23,6 @@ const Focused = ({
   initialMessages: InitialMessage[];
   newMessage: Message[];
 }) => {
-  
   const websiteTheme = useRecoilValue(websiteThemeState);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
@@ -38,9 +37,7 @@ const Focused = ({
   return (
     <>
       <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
-        {
-         
-        initialMessages?.map((msg: InitialMessage, index: number) => (
+        {initialMessages?.map((msg: InitialMessage, index: number) => (
           <>
             <div
               className="flex gap-2 lg:gap-5 xl:gap-10  items-center  "
@@ -48,14 +45,16 @@ const Focused = ({
             >
               <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
                 <p
-                  className=" text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap"
+                  className=" text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap w-[50px]   sm:w-[70%]"
                   style={{
                     color: websiteTheme.textColor,
+                    wordBreak: "break-word",
+                    whiteSpace: "normal",
                   }}
                 >
                   {msg.username}
                 </p>
-                <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
+                <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[30px] h-[30px] overflow-hidden">
                   <img
                     src={msg.profilePic}
                     className=" object-cover w-full h-full"
@@ -63,7 +62,14 @@ const Focused = ({
                 </div>
               </div>
               <div className="  w-[70%] lg:w-[60%]">
-                <p className=" text-[13px] lg:text-[18px] xl:text-[20px]">
+                <p
+                  className=" text-[13px] lg:text-[18px] xl:text-[20px] "
+                  style={{
+                    color: websiteTheme.textColor,
+                    wordBreak: "break-word",
+                    whiteSpace: "normal",
+                  }}
+                >
                   {msg.message}
                 </p>
               </div>

@@ -25,22 +25,26 @@ const Profile = () => {
   const walletAddress = localStorage.getItem("walletAddress");
 
   const validateUsername = async () => {
-    try {
-      setShowError(false);
-      const result = await axios.post(
-        `${BASE_URI}/api/profile?walletAddress=${walletAddress}&username=${userName}`
-      );
-      setUserName("");
-      if (result.status === 201) {
-        setShowSuccess(true);
-        setusername(result.data.user.username);
-      }
-    } catch (err: any) {
-      if (err.response) {
-        if (err.response.status === 409) {
-          setShowError(true);
+    if (userName.length <= 15) {
+      try {
+        setShowError(false);
+        const result = await axios.post(
+          `${BASE_URI}/api/profile?walletAddress=${walletAddress}&username=${userName}`
+        );
+        setUserName("");
+        if (result.status === 201) {
+          setShowSuccess(true);
+          setusername(result.data.user.username);
+        }
+      } catch (err: any) {
+        if (err.response) {
+          if (err.response.status === 409) {
+            setShowError(true);
+          }
         }
       }
+    } else {
+      alert("Username cannot exceed 15 characters");
     }
   };
 
@@ -99,7 +103,7 @@ const Profile = () => {
         <div className=" relative group  border border-white h-[100px] w-[100px] lg:h-[200px] lg:w-[200px] rounded-[100%] flex items-center justify-center ">
           <div className=" rounded-full h-full w-full overflow-hidden ">
             <img
-              src={profilePic ? profilePic : profilePicFromS3}
+              src={profilePic ? URL.createObjectURL(profilePic) : profilePicFromS3}
               className=" object-cover w-full h-full"
             />
           </div>
