@@ -33,10 +33,10 @@ const Slider = ({
       direction={scrollDirection}
       key={messages.map((msg) => msg._id).join()}
     >
-      <div className="flex gap-[30px] w-full">
+      <div className="flex gap-[30px] w-full overflow-auto">
         {messages.map((msg: Message) => (
           <>
-            <div className=" flex items-center gap-[10px] ">
+            <div className=" flex items-center gap-[5px] ">
               <p
                 className=" text-[12px] lg:text-[14px] xl:text-[16px] "
                 style={{
@@ -45,7 +45,9 @@ const Slider = ({
               >
                 {msg.username}
               </p>
-              <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
+              <div
+              //  style={{borderColor:websiteTheme.textColor}}
+                className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden  border-[0.5px]">
                 <img
                   src={msg.profilePic}
                   className=" object-cover w-full h-full"
@@ -65,16 +67,18 @@ const Slider = ({
         ))}
         {messages.map((msg: Message) => (
           <>
-            <div className=" flex items-center gap-[10px]  ">
+            <div className=" flex items-center gap-[10px] ">
               <p
-                className=" text-[12px] lg:text-[14px] xl:text-[16px] "
+                className=" text-[12px] lg:text-[14px] xl:text-[16px]  mr-[10px] ml-[10px] "
                 style={{
                   color: websiteTheme.textColor,
                 }}
               >
                 {msg.username}
               </p>
-              <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden ">
+              <div
+               style={{borderColor:websiteTheme.textColor}}
+                className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden border">
                 <img
                   src={msg.profilePic}
                   className=" object-cover w-full h-full"

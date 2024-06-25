@@ -80,7 +80,9 @@ const Profile = () => {
       const data = response.data;
       setProfilePicFromS3(data.data.Location);
       setShowFileUploadSuccess(true);
+
       setProfilePic(data.data.Location);
+
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -103,7 +105,7 @@ const Profile = () => {
         <div className=" relative group  border border-white h-[100px] w-[100px] lg:h-[200px] lg:w-[200px] rounded-[100%] flex items-center justify-center ">
           <div className=" rounded-full h-full w-full overflow-hidden ">
             <img
-              src={profilePic ? URL.createObjectURL(profilePic) : profilePicFromS3}
+              src={profilePic ? URL.createObjectURL(profilePic) ? URL.createObjectURL(profilePic) : profilePic : profilePicFromS3}
               className=" object-cover w-full h-full"
             />
           </div>

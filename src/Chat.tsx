@@ -12,8 +12,13 @@ import { websiteThemeState } from "./atoms/website-theme";
 import axios from "axios";
 import messageNotification from "./assets/message_notification.mp3";
 import { userNameState } from "./atoms/users";
-// import Equator from "./components/message-animations/Equator";
 import Focused from "./components/message-animations/Focused";
+import synthIcon from "./assets/synth.svg";
+import audioIcon from "./assets/audio.svg";
+import slideIcon from "./assets/slide.svg";
+import onIcon from "./assets/on.svg";
+import ambientIcon from "./assets/ambient.svg";
+import winIcon from "./assets/win.svg";
 import { websiteAudioState } from "./atoms/website-theme";
 import winMusic from "./assets/win.mp3";
 import onMusic from "./assets/on.mp3";
@@ -106,8 +111,6 @@ const Chat = () => {
     };
   }, []);
 
-
-
   const handleSendMessage = () => {
     if (currentUserMessage.length <= 500) {
       if (currentUserMessage.trim()) {
@@ -123,8 +126,11 @@ const Chat = () => {
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
+  const handleKeyDown = (e: any) => {
+    if (e.key === "Enter" && e.shiftKey) {
+      e.preventDefault();
+      setCurrentUserMessage((prevValue) => prevValue + "\n");
+    } else if (e.key === "Enter") {
       handleSendMessage();
     }
   };
@@ -151,7 +157,7 @@ const Chat = () => {
         backgroundColor: websiteTheme.bgColor,
         color: websiteTheme.textColor,
       }}
-      className={`transition-colors duration-300 w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
+      className={`transition-colors duration-1000 w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
     >
       <div>
         <audio ref={audioRef} loop>
@@ -196,7 +202,7 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[70%] lg:w-[40%] xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black z-10"
+              className="w-[70%] lg:w-[50%] xl:w-[45%] 2xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black z-10"
             >
               <div
                 className={`${
@@ -348,7 +354,10 @@ const Chat = () => {
                 </div>
                 {/* --------------------------------------------- */}
                 <div className=" flex items-center  rounded-[8px]">
-                  <p className=" w-[16%] text-[10px] lg:text-[16px]">audio</p>
+                  <div className=" flex items-center gap-[10px] cursor-pointer mr-[5px] " onClick={()=>audioRef.current!.pause()}>
+                    <p className="  text-[10px] lg:text-[16px]">audio</p>
+                    <img src={audioIcon} className=" mt-[-2px]"/>
+                  </div>
                   <div className=" w-full flex justify-around">
                     <div
                       className=" flex flex-col items-center justify-center"
@@ -359,8 +368,10 @@ const Chat = () => {
                           websiteAudio === winMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        }  h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
-                      ></div>
+                        }  h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                      >
+                        <img src={winIcon} className=" w-[100%] h-auto" />
+                      </div>
                       <p
                         className={`text-[10px] lg:text-[16px] ${
                           websiteAudio === winMusic
@@ -381,8 +392,10 @@ const Chat = () => {
                           websiteAudio === slideMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
-                      ></div>
+                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                      >
+                        <img src={slideIcon} className=" w-[100%] h-auto" />
+                      </div>
 
                       <p
                         className={` text-[10px] lg:text-[16px] border ${
@@ -404,8 +417,10 @@ const Chat = () => {
                           websiteAudio === onMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
-                      ></div>
+                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                      >
+                        <img src={onIcon} className=" w-[100%] h-auto mt-[7px] " />
+                      </div>
 
                       <p
                         className={` text-[10px] lg:text-[16px] border ${
@@ -427,8 +442,10 @@ const Chat = () => {
                           websiteAudio === synthMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
-                      ></div>
+                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                      >
+                        <img src={synthIcon} className=" w-[100%] h-auto" />
+                      </div>
 
                       <p
                         className={` text-[10px] lg:text-[16px] ${
@@ -450,8 +467,10 @@ const Chat = () => {
                           websiteAudio === ambientMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer`}
-                      ></div>
+                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                      >
+                        <img src={ambientIcon} className=" w-[100%] h-auto" />
+                      </div>
 
                       <p
                         className={` text-[10px] lg:text-[16px] ${
@@ -551,7 +570,7 @@ const Chat = () => {
             </motion.div>
           ) : (
             <div className="w-[60%] lg:w-[40%] xl:w-[35%] ">
-              <motion.input
+              <motion.textarea
                 initial={{ y: "100%" }}
                 animate={{ y: 0 }}
                 exit={{ y: "100%" }}
@@ -562,9 +581,10 @@ const Chat = () => {
                   websiteTheme.bgColor === "#ffffff"
                     ? "border border-black"
                     : "border-none"
-                } text-[#121212] uppercase p-3 lg:p-5 mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none`}
+                } text-[#121212] uppercase p-3 lg:p-5 mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none resize-none`}
                 onChange={(e) => setCurrentUserMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
+                rows={1}
               />
             </div>
           )}
