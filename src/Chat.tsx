@@ -151,7 +151,7 @@ const Chat = () => {
         backgroundColor: websiteTheme.bgColor,
         color: websiteTheme.textColor,
       }}
-      className={`w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
+      className={`transition-colors duration-300 w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
     >
       <div>
         <audio ref={audioRef} loop>
