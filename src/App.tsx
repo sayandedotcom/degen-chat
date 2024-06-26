@@ -9,6 +9,7 @@ import { walletAddressState } from "./atoms/wallet";
 import { useRecoilState } from "recoil";
 import { SolanaConnect } from "./components/ConnectButton";
 import { useNavigate } from "react-router-dom";
+import { TransactionsCountErrorIcon } from "./components/Icons";
 const App: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(true);
@@ -112,14 +113,26 @@ const App: React.FC = () => {
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
               className={`bg-white ${
-                showVerifying ? "opacity-60" : "opacity-100"
-              } coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full flex flex-col gap-2`}
+                showVerifying ? "opacity-100" : "opacity-100"
+              } coming-soon-shadow text-[#0000FF]  uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full flex flex-col gap-2 ${
+                showWalletTransactionsError &&
+                "bg-opacity-0 anti-coming-soon-shadow opacity-100"
+              }`}
             >
               <div className=" mx-auto">
                 {showVerifying ? (
                   <>
                     {showWalletTransactionsError ? (
-                      <p>access denied</p>
+                      <div className=" text-white text-center mt-[-10px] flex flex-col gap-[10px] ">
+                        <div className=" flex justify-center">
+                          <TransactionsCountErrorIcon />
+                        </div>
+                        <p>access denied</p>
+                        <p className=" lg:w-[1000px]">
+                          wallet must have at least 69 transactions in the past
+                          to access this universe
+                        </p>
+                      </div>
                     ) : (
                       <p>verifying...</p>
                     )}
@@ -134,6 +147,8 @@ const App: React.FC = () => {
                 )}
               </div>
             </motion.div>
+          ) : showWalletTransactionsError && showVerifying ? (
+            <></>
           ) : (
             <button
               className="bg-white coming-soon-shadow text-[#0000FF] uppercase font-jbm text-[15px] lg:text-[24px] p-2 lg:p-4 w-[90%] mx-auto mt-5 sm:w-full"

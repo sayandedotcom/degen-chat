@@ -13,6 +13,9 @@ body {
 .coming-soon-shadow {
   box-shadow: 0 0 20px #ffffff;
 }
+.anti-coming-soon-shadow {
+  box-shadow: none;
+}
 
 .marquee-container {
   position: relative;
@@ -43,13 +46,12 @@ body {
   }
   to {
     transform: translateX(-100%);
-}
+  }
 }
 
 .marquee-container.right .marquee {
   animation-direction: reverse;
 }
-
 
 @keyframes scroll {
   from {
