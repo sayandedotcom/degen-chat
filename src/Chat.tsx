@@ -49,6 +49,7 @@ interface Settings {
 const Chat = () => {
   const [currentUserMessage, setCurrentUserMessage] = useState("");
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const [isMusicPlayinh, setMusicIsPlaying] = useState(true);
   const [settingsModal, setSettingsModal] = useState<Settings>({
     visual: "rem",
     audio: "win",
@@ -151,6 +152,16 @@ const Chat = () => {
     }
   }, [websiteAudio]);
 
+  const handleMusicPlayPause = () => {
+    if (isMusicPlayinh) {
+      audioRef.current?.pause();
+      setMusicIsPlaying(false);
+    } else {
+      audioRef.current?.play();
+      setMusicIsPlaying(true);
+    }
+  };
+
   return (
     <div
       style={{
@@ -219,7 +230,7 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-350px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px]  lg:mt-[0px] border border-black"
+              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-350px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px]   border border-black"
             >
               <div
                 className={`${
@@ -371,13 +382,13 @@ const Chat = () => {
                     </div>
                   </div>
                 </div>
-                <div className=" w-[100%] h-[1px] bg-gradient-to-r from-[#0000FF] to-transparent " />
+                <div className=" w-[100%] h-[1px] bg-gradient-to-r from-[#0000FF] to-transparent lg:hidden " />
 
                 {/* --------------------------------------------- */}
                 <div className=" flex lg:items-center flex-col lg:flex-row   rounded-[8px]">
                   <div
                     className=" flex items-center gap-[10px] cursor-pointer mr-[5px] "
-                    onClick={() => audioRef.current!.pause()}
+                    onClick={handleMusicPlayPause}
                   >
                     <p className="  text-[12px] lg:text-[16px]">audio</p>
                     <img src={audioIcon} className=" mt-[-3px]" />
@@ -511,7 +522,7 @@ const Chat = () => {
                     </div>
                   </div>
                 </div>
-                <div className=" w-[100%] h-[1px] bg-gradient-to-r from-[#0000FF] to-transparent " />
+                <div className=" w-[100%] h-[1px] bg-gradient-to-r from-[#0000FF] to-transparent lg:hidden" />
                 {/* ------------------------------- */}
                 <div className=" flex flex-col lg:flex-row lg:items-center  rounded-[8px]">
                   <p className=" w-[18%] text-[12px] lg:text-[16px]">motion</p>
@@ -609,7 +620,7 @@ const Chat = () => {
                   websiteTheme.bgColor === "#ffffff"
                     ? "border border-black"
                     : "border-none"
-                } text-[#121212] uppercase p-3 lg:p-5 text-[13px] mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none resize-none`}
+                } text-[#121212] uppercase p-3 lg:p-5 text-[13px] lg:text-[18px] mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none resize-none`}
                 onChange={(e) => setCurrentUserMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 rows={1}

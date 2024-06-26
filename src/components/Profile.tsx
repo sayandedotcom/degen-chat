@@ -82,7 +82,6 @@ const Profile = () => {
       setShowFileUploadSuccess(true);
 
       setProfilePic(data.data.Location);
-
     } catch (error) {
       console.error("Error uploading file:", error);
     }
@@ -105,7 +104,13 @@ const Profile = () => {
         <div className=" relative group  border border-white h-[100px] w-[100px] lg:h-[200px] lg:w-[200px] rounded-[100%] flex items-center justify-center ">
           <div className=" rounded-full h-full w-full overflow-hidden ">
             <img
-              src={profilePic ? URL.createObjectURL(profilePic) ? URL.createObjectURL(profilePic) : profilePic : profilePicFromS3}
+              src={
+                profilePic
+                  ? URL.createObjectURL(profilePic)
+                    ? URL.createObjectURL(profilePic)
+                    : profilePic
+                  : profilePicFromS3
+              }
               className=" object-cover w-full h-full"
             />
           </div>
@@ -145,7 +150,9 @@ const Profile = () => {
               placeholder="type here"
               value={userName}
               onChange={(e) => setUserName(e.target.value)}
-              className="  bg-inherit uppercase  border  p-2 lg:p-5 text-[15px] lg:text-[20px] outline-none text-red-600"
+              className={`  bg-inherit uppercase  border  p-2 lg:p-5 text-[15px] lg:text-[20px] outline-none ${
+                showError ? "text-red-600" : "text-white"
+              }`}
             />
           </div>
         </div>
