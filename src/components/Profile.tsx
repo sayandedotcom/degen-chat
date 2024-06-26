@@ -86,6 +86,18 @@ const Profile = () => {
       console.error("Error uploading file:", error);
     }
   };
+
+  const renderProfilePic = () => {
+    if (profilePic) {
+      try {
+        return URL.createObjectURL(profilePic);
+      } catch {
+        return profilePic;
+      }
+    } else {
+      return profilePicFromS3;
+    }
+  };
   return (
     <div
       style={{
@@ -104,13 +116,7 @@ const Profile = () => {
         <div className=" relative group  border border-white h-[100px] w-[100px] lg:h-[200px] lg:w-[200px] rounded-[100%] flex items-center justify-center ">
           <div className=" rounded-full h-full w-full overflow-hidden ">
             <img
-              src={
-                profilePic
-                  ? URL.createObjectURL(profilePic)
-                    ? URL.createObjectURL(profilePic)
-                    : profilePic
-                  : profilePicFromS3
-              }
+              src={renderProfilePic()}
               className=" object-cover w-full h-full"
             />
           </div>
