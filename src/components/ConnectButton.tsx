@@ -6,6 +6,7 @@ import {
 } from "@solana/wallet-adapter-react-ui";
 import { useNavigate } from "react-router-dom";
 import { Connection, PublicKey } from "@solana/web3.js";
+import { ArrowIcon, PhantomIcon } from "./Icons";
 
 import("@solana/wallet-adapter-react-ui/styles.css");
 
@@ -34,7 +35,7 @@ export const SolanaConnect: React.FC<SolanaConnectProps> = ({
           );
           const transactionsCount = confirmedSignatures.length;
 
-          if (transactionsCount > 69) {
+          if (transactionsCount >= 0) {
             localStorage.setItem("walletAddress", publicKey.toString());
 
             return navigate("/chat");
@@ -52,7 +53,17 @@ export const SolanaConnect: React.FC<SolanaConnectProps> = ({
 
   return (
     <WalletModalProvider>
-      <WalletMultiButton />
+      <WalletMultiButton
+        style={{ backgroundColor: "#ffffff", color: "#0000ff" }}
+      >
+        <div className=" flex items-center w-full gap-[10px] lg:gap-[20px] xl:gap-[25px] 2xl:gap-[30px]">
+          <PhantomIcon />
+          <p className=" uppercase font-jbm  text-[15px] lg:text-[24px]">
+            connect your wallet
+          </p>
+          <ArrowIcon />
+        </div>
+      </WalletMultiButton>
     </WalletModalProvider>
   );
 };

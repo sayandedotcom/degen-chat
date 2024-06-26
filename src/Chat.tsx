@@ -26,7 +26,9 @@ import slideMusic from "./assets/slide.mp3";
 import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
 import EquatorTest from "./components/message-animations/EquatorTest";
-const BASE_URI = "https://prithvikr.live";
+// import { walletAddressState } from "./atoms/wallet";
+// import { useNavigate } from "react-router-dom";
+const BASE_URI = import.meta.env.VITE_BASE_URI;
 
 interface Message {
   _id: any;
