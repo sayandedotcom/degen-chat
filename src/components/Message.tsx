@@ -73,7 +73,7 @@ export const MessageComponent: React.FC<Message> = ({
           >
             {username}
           </p>
-          <div className="   lg:w-[60%]">
+          <div className="   lg:w-[60%]  ">
             <p
               className=" text-[15px] lg:text-[18px] xl:text-[20px] "
               style={{

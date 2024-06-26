@@ -179,6 +179,23 @@ const Chat = () => {
       </div>
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto mb-[10px]  w-full">
+        <div className="sticky top-0 flex justify-end opacity-80 pr-[20px]">
+          <motion.button
+            whileTap={clickAnimation}
+            className={`p-[10px] lg:p-[15px] ${
+              websiteTheme.bgColor === "#ffffff"
+                ? "border border-black"
+                : "border-none"
+            } rounded-[4px] lg:rounded-[8px] lg:hidden`}
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+          >
+            {isSettingsOpen ? (
+              <SettingsClosed color={websiteTheme.textColor} />
+            ) : (
+              <SettingsIcon color={websiteTheme.textColor} />
+            )}
+          </motion.button>
+        </div>
         {settingsModal.motion === "focused"
           ? initialMessages.length > 0 && (
               <Focused
@@ -202,173 +219,180 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[70%] lg:w-[50%] xl:w-[45%] 2xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black z-10"
+              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px] mt-[-100px] lg:mt-[0px]"
             >
               <div
                 className={`${
                   websiteTheme.bgColor === "#ffffff"
                     ? "border border-black"
                     : "border-none"
-                } bg-white  p-5 rounded-[8px] flex flex-col gap-[5px] `}
+                } bg-white  p-5 rounded-[8px] flex flex-col gap-[20px] lg:gap-[5px] `}
               >
-                <div className=" flex items-center rounded-[8px] ">
-                  <div className=" w-[15%] ">
-                    <p className=" text-[10px] lg:text-[16px]">visual</p>
+                <div className=" flex lg:items-center rounded-[8px] flex-col lg:flex-row ">
+                  <div className=" w-[15%]  ">
+                    <p className=" text-[12px] lg:text-[16px]">visual</p>
                   </div>
-                  <div className="  w-full flex justify-around">
-                    <div
-                      className=" flex flex-col items-center "
-                      onClick={() => {
-                        setWebsiteTheme({
-                          ...websiteTheme,
-                          bgColor: "#0000FF",
-                          textColor: "#ffffff",
-                          buttonColor: "#0000FF",
-                        });
-                      }}
-                    >
-                      <div className="hidden lg:block bg-[#0000FF] text-white p-[5px] lg:p-2 rounded-[3px] text-[5px] lg:text-[10px] cursor-pointer ">
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                      </div>
-                      <p
-                        className={`text-[10px] lg:text-[16px] ${
-                          settingsModal.visual === "rem"
-                            ? "text-[#0000FF]"
-                            : "text-black"
-                        } border border-black rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                  <div className=" flex items-center justify-between w-full mt-[10px] lg:mt-[0px]">
+                    <div className="  w-full flex justify-between lg:justify-around">
+                      <div
+                        className=" flex flex-col items-center "
+                        onClick={() => {
+                          setWebsiteTheme({
+                            ...websiteTheme,
+                            bgColor: "#0000FF",
+                            textColor: "#ffffff",
+                            buttonColor: "#0000FF",
+                          });
+                        }}
                       >
-                        rem
-                      </p>
-                    </div>
+                        <div className=" bg-[#0000FF] text-white p-[5px] lg:p-2 rounded-[3px] text-[8px] lg:text-[10px] cursor-pointer ">
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                        </div>
+                        <p
+                          className={`text-[10px] lg:text-[16px] ${
+                            settingsModal.visual === "rem"
+                              ? "text-[#0000FF]"
+                              : "text-black"
+                          }  lg:border-none lg:p-0`}
+                        >
+                          rem
+                        </p>
+                      </div>
 
-                    <div
-                      className=" flex flex-col items-center"
-                      onClick={() => {
-                        setWebsiteTheme({
-                          ...websiteTheme,
-                          bgColor: "#000000",
-                          textColor: "#00FF00",
-                          buttonColor: "#000000",
-                        });
-                      }}
-                    >
-                      <div className="hidden lg:block bg-[#000000] text-[#00FF00] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer ">
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                      </div>
-                      <p
-                        className={`text-[10px] lg:text-[16px] ${
-                          settingsModal.visual === "neo"
-                            ? "text-[#0000FF]"
-                            : "text-black"
-                        }  border border-black rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                      <div
+                        className=" flex flex-col items-center"
+                        onClick={() => {
+                          setWebsiteTheme({
+                            ...websiteTheme,
+                            bgColor: "#000000",
+                            textColor: "#00FF00",
+                            buttonColor: "#000000",
+                          });
+                        }}
                       >
-                        neo
-                      </p>
-                    </div>
+                        <div className=" bg-[#000000] text-[#00FF00] text-[8px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer ">
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                        </div>
+                        <p
+                          className={`text-[10px] lg:text-[16px] ${
+                            settingsModal.visual === "neo"
+                              ? "text-[#0000FF]"
+                              : "text-black"
+                          }  rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                        >
+                          neo
+                        </p>
+                      </div>
 
-                    <div
-                      className=" flex flex-col items-center"
-                      onClick={() => {
-                        setWebsiteTheme({
-                          ...websiteTheme,
-                          bgColor: "#00FF00",
-                          textColor: "#000000",
-                          buttonColor: "#00FF00",
-                        });
-                      }}
-                    >
-                      <div className="hidden lg:block bg-[#00FF00] text-[#000000] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer ">
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                      </div>
-                      <p
-                        className={`text-[10px] lg:text-[16px] ${
-                          settingsModal.visual === "oen"
-                            ? "text-[#0000FF]"
-                            : "text-black"
-                        }  border border-black rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                      <div
+                        className=" flex flex-col items-center"
+                        onClick={() => {
+                          setWebsiteTheme({
+                            ...websiteTheme,
+                            bgColor: "#00FF00",
+                            textColor: "#000000",
+                            buttonColor: "#00FF00",
+                          });
+                        }}
                       >
-                        oen
-                      </p>
-                    </div>
+                        <div className=" bg-[#00FF00] text-[#000000] text-[8px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer ">
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                        </div>
+                        <p
+                          className={`text-[10px] lg:text-[16px] ${
+                            settingsModal.visual === "oen"
+                              ? "text-[#0000FF]"
+                              : "text-black"
+                          }   rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                        >
+                          oen
+                        </p>
+                      </div>
 
-                    <div
-                      className=" flex flex-col items-center"
-                      onClick={() => {
-                        setWebsiteTheme({
-                          ...websiteTheme,
-                          bgColor: "#FF5959",
-                          textColor: "#ffffff",
-                          buttonColor: "#000000",
-                        });
-                      }}
-                    >
-                      <div className="hidden lg:block bg-[#FF5959] text-[#3D3D3D] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer">
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                      </div>
-                      <p
-                        className={`text-[10px] lg:text-[16px] ${
-                          settingsModal.visual === "hmmm"
-                            ? "text-[#0000FF]"
-                            : "text-black"
-                        } border border-black rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                      <div
+                        className=" flex flex-col items-center"
+                        onClick={() => {
+                          setWebsiteTheme({
+                            ...websiteTheme,
+                            bgColor: "#FF5959",
+                            textColor: "#ffffff",
+                            buttonColor: "#000000",
+                          });
+                        }}
                       >
-                        hmmm
-                      </p>
-                    </div>
+                        <div className=" bg-[#FF5959] text-[#3D3D3D] text-[8px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] cursor-pointer">
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                        </div>
+                        <p
+                          className={`text-[10px] lg:text-[16px] ${
+                            settingsModal.visual === "hmmm"
+                              ? "text-[#0000FF]"
+                              : "text-black"
+                          }  rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                        >
+                          hmmm
+                        </p>
+                      </div>
 
-                    <div
-                      className=" flex flex-col items-center"
-                      onClick={() => {
-                        setWebsiteTheme({
-                          ...websiteTheme,
-                          bgColor: "#ffffff",
-                          textColor: "#000000",
-                          buttonColor: "#000000",
-                        });
-                      }}
-                    >
-                      <div className="hidden lg:block bg-[#ffffff] text-[#000000] text-[5px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] border border-black cursor-pointer ">
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                        <p>dont sin</p>
-                      </div>
-                      <p
-                        className={`text-[10px] lg:text-[16px] ${
-                          settingsModal.visual === "b/w"
-                            ? "text-[#0000FF]"
-                            : "text-black"
-                        }  border border-black rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                      <div
+                        className=" flex flex-col items-center"
+                        onClick={() => {
+                          setWebsiteTheme({
+                            ...websiteTheme,
+                            bgColor: "#ffffff",
+                            textColor: "#000000",
+                            buttonColor: "#000000",
+                          });
+                        }}
                       >
-                        b/w
-                      </p>
+                        <div className=" bg-[#ffffff] text-[#000000] text-[8px] lg:text-[10px]  p-[5px] lg:p-2 rounded-[3px] border border-black cursor-pointer ">
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                          <p>dont sin</p>
+                        </div>
+                        <p
+                          className={`text-[10px] lg:text-[16px] ${
+                            settingsModal.visual === "b/w"
+                              ? "text-[#0000FF]"
+                              : "text-black"
+                          }   rounded-[2px] p-[4px] lg:border-none lg:p-0`}
+                        >
+                          b/w
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
+                <div className=" w-[100%] h-[1px] bg-gradient-to-r from-[#0000FF] to-transparent " />
+
                 {/* --------------------------------------------- */}
-                <div className=" flex items-center  rounded-[8px]">
-                  <div className=" flex items-center gap-[10px] cursor-pointer mr-[5px] " onClick={()=>audioRef.current!.pause()}>
-                    <p className="  text-[10px] lg:text-[16px]">audio</p>
-                    <img src={audioIcon} className=" mt-[-2px]"/>
+                <div className=" flex lg:items-center flex-col lg:flex-row   rounded-[8px]">
+                  <div
+                    className=" flex items-center gap-[10px] cursor-pointer mr-[5px] "
+                    onClick={() => audioRef.current!.pause()}
+                  >
+                    <p className="  text-[12px] lg:text-[16px]">audio</p>
+                    <img src={audioIcon} className=" mt-[-3px]" />
                   </div>
-                  <div className=" w-full flex justify-around">
+                  <div className=" w-full flex lg:justify-around justify-between mt-[10px] lg:mt-[0px]">
                     <div
                       className=" flex flex-col items-center justify-center"
                       onClick={() => setWebsiteAudio(winMusic)}
                     >
                       <div
-                        className={`hidden lg:block  bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        className={`  bg-[#ffffff] text-white text-[10px] p-2 border ${
                           websiteAudio === winMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        }  h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                        }  h-[45px] w-[45px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
                       >
                         <img src={winIcon} className=" w-[100%] h-auto" />
                       </div>
@@ -377,7 +401,7 @@ const Chat = () => {
                           websiteAudio === winMusic
                             ? "text-[#0000FF]"
                             : "text-black"
-                        } border border-black p-[4px] rounded-[2px] lg:border-none`}
+                        } p-[4px] rounded-[2px] lg:border-none`}
                       >
                         win
                       </p>
@@ -388,21 +412,21 @@ const Chat = () => {
                       onClick={() => setWebsiteAudio(slideMusic)}
                     >
                       <div
-                        className={` hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        className={`  bg-[#ffffff] text-white text-[10px] p-2 border ${
                           websiteAudio === slideMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                        } h-[45px] w-[45px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
                       >
                         <img src={slideIcon} className=" w-[100%] h-auto" />
                       </div>
 
                       <p
-                        className={` text-[10px] lg:text-[16px] border ${
+                        className={` text-[10px] lg:text-[16px]  ${
                           websiteAudio === slideMusic
                             ? "text-[#0000FF]"
                             : "text-black"
-                        } border-black p-[4px] rounded-[2px] lg:border-none`}
+                        }  p-[4px] rounded-[2px] lg:border-none`}
                       >
                         slide
                       </p>
@@ -413,21 +437,24 @@ const Chat = () => {
                       onClick={() => setWebsiteAudio(onMusic)}
                     >
                       <div
-                        className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        className={` bg-[#ffffff] text-white text-[10px] p-2 border ${
                           websiteAudio === onMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                        } h-[45px] w-[45px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
                       >
-                        <img src={onIcon} className=" w-[100%] h-auto mt-[7px] " />
+                        <img
+                          src={onIcon}
+                          className=" w-[100%] h-auto mt-[7px] "
+                        />
                       </div>
 
                       <p
-                        className={` text-[10px] lg:text-[16px] border ${
+                        className={` text-[10px] lg:text-[16px]  ${
                           websiteAudio === onMusic
                             ? "text-[#0000FF]"
                             : "text-black"
-                        } border-black p-[4px] rounded-[2px] lg:border-none`}
+                        } p-[4px] rounded-[2px] lg:border-none`}
                       >
                         on
                       </p>
@@ -438,11 +465,11 @@ const Chat = () => {
                       onClick={() => setWebsiteAudio(synthMusic)}
                     >
                       <div
-                        className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        className={` bg-[#ffffff] text-white text-[10px] p-2 border ${
                           websiteAudio === synthMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                        } h-[45px] w-[45px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
                       >
                         <img src={synthIcon} className=" w-[100%] h-auto" />
                       </div>
@@ -452,7 +479,7 @@ const Chat = () => {
                           websiteAudio === synthMusic
                             ? "text-[#0000FF]"
                             : "text-black"
-                        } border border-black p-[4px] rounded-[2px] lg:border-none`}
+                        }  p-[4px] rounded-[2px] lg:border-none`}
                       >
                         synth
                       </p>
@@ -463,11 +490,11 @@ const Chat = () => {
                       onClick={() => setWebsiteAudio(ambientMusic)}
                     >
                       <div
-                        className={`hidden lg:block bg-[#ffffff] text-white text-[10px] p-2 border ${
+                        className={` bg-[#ffffff] text-white text-[10px] p-2 border ${
                           websiteAudio === ambientMusic
                             ? "border-[#0000FF]"
                             : "border-black"
-                        } h-[32px] w-[35px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
+                        } h-[45px] w-[45px] lg:h-[65px] lg:w-[65px] rounded-[3px] cursor-pointer flex items-center justify-center`}
                       >
                         <img src={ambientIcon} className=" w-[100%] h-auto" />
                       </div>
@@ -477,17 +504,18 @@ const Chat = () => {
                           websiteAudio === ambientMusic
                             ? "text-[#0000FF]"
                             : "text-black"
-                        } border border-black p-[4px] rounded-[2px] lg:border-none`}
+                        }  p-[4px] rounded-[2px] lg:border-none`}
                       >
                         ambient
                       </p>
                     </div>
                   </div>
                 </div>
+                <div className=" w-[100%] h-[1px] bg-gradient-to-r from-[#0000FF] to-transparent " />
                 {/* ------------------------------- */}
-                <div className=" flex items-center  rounded-[8px]">
-                  <p className=" w-[18%] text-[10px] lg:text-[16px]">motion</p>
-                  <div className=" flex w-full justify-around">
+                <div className=" flex flex-col lg:flex-row lg:items-center  rounded-[8px]">
+                  <p className=" w-[18%] text-[12px] lg:text-[16px]">motion</p>
+                  <div className=" flex w-full lg:justify-around justify-between mt-[10px] lg:mt-[0px]">
                     <div
                       className=" flex flex-col items-center"
                       onClick={() =>
@@ -495,17 +523,17 @@ const Chat = () => {
                       }
                     >
                       <div
-                        className={`hidden lg:block bg-[#white] ${
+                        className={` bg-[#white] ${
                           settingsModal.motion === "chaos"
                             ? "text-[#0000FF] border border-[#0000FF]"
                             : "text-black border border-black"
-                        }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer`}
+                        }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[8px] cursor-pointer`}
                       >
                         <p>dont sin</p>
                         <p>dont sin</p>
                         <p>dont sin</p>
                       </div>
-                      <p className=" text-[10px] lg:text-[16px] border border-black p-[4px] rounded-[2px] lg:border-none">
+                      <p className=" text-[10px] lg:text-[16px] p-[4px] rounded-[2px] lg:border-none">
                         chaos
                       </p>
                     </div>
@@ -519,17 +547,17 @@ const Chat = () => {
                       }
                     >
                       <div
-                        className={`hidden lg:block bg-[#white] ${
+                        className={` bg-[#white] ${
                           settingsModal.motion === "focused"
                             ? "text-[#0000FF] border border-[#0000FF]"
                             : "text-black border border-black"
-                        }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer `}
+                        }  lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[8px] cursor-pointer `}
                       >
                         <p>dont sin</p>
                         <p>dont sin</p>
                         <p>dont sin</p>
                       </div>
-                      <p className=" text-[10px] lg:text-[16px] border border-black p-[4px] rounded-[2px] lg:border-none">
+                      <p className=" text-[10px] lg:text-[16px]  p-[4px] rounded-[2px] lg:border-none">
                         focused
                       </p>
                     </div>
@@ -543,17 +571,17 @@ const Chat = () => {
                       }
                     >
                       <div
-                        className={`hidden lg:block bg-[#white] ${
+                        className={` bg-[#white] ${
                           settingsModal.motion === "equator"
                             ? "text-[#0000FF] border border-[#0000FF]"
                             : "text-black border border-black"
-                        } lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[5px] cursor-pointer`}
+                        } lg:text-[10px] p-[5px] lg:p-2 rounded-[3px] text-[8px] cursor-pointer`}
                       >
                         <p>dont sin</p>
                         <p>dont sin</p>
                         <p>dont sin</p>
                       </div>
-                      <p className=" text-[10px] lg:text-[16px] border border-black p-[4px] rounded-[2px] lg:border-none">
+                      <p className=" text-[10px] lg:text-[16px]  p-[4px] rounded-[2px] lg:border-none">
                         equator
                       </p>
                     </div>
@@ -581,7 +609,7 @@ const Chat = () => {
                   websiteTheme.bgColor === "#ffffff"
                     ? "border border-black"
                     : "border-none"
-                } text-[#121212] uppercase p-3 lg:p-5 mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none resize-none`}
+                } text-[#121212] uppercase p-3 lg:p-5 text-[13px] mx-auto rounded-[4px] lg:rounded-[8px] w-full outline-none resize-none`}
                 onChange={(e) => setCurrentUserMessage(e.target.value)}
                 onKeyDown={handleKeyDown}
                 rows={1}
@@ -595,23 +623,41 @@ const Chat = () => {
             websiteTheme.bgColor === "#ffffff"
               ? "border border-black"
               : "border-none"
-          } bg-white rounded-[4px] lg:rounded-[8px]`}
+          } bg-white rounded-[4px] lg:rounded-[8px] hidden lg:block`}
           onClick={handleSendMessage}
         >
           <AiOutlineSend
-            className={`w-[28px] lg:w-[35px] h-auto `}
+            className={`w-[22px] lg:w-[35px] h-auto `}
             style={{
               color: websiteTheme.buttonColor,
             }}
           />
         </motion.button>
+        {!isSettingsOpen && (
+          <motion.button
+            whileTap={clickAnimation}
+            className={`p-[10px] lg:p-[15px] ${
+              websiteTheme.bgColor === "#ffffff"
+                ? "border border-black"
+                : "border-none"
+            } bg-white rounded-[4px] lg:rounded-[8px] lg:hidden`}
+            onClick={handleSendMessage}
+          >
+            <AiOutlineSend
+              className={`w-[22px] lg:w-[35px] h-auto `}
+              style={{
+                color: websiteTheme.buttonColor,
+              }}
+            />
+          </motion.button>
+        )}
         <motion.button
           whileTap={clickAnimation}
           className={`p-[10px] lg:p-[15px] ${
             websiteTheme.bgColor === "#ffffff"
               ? "border border-black"
               : "border-none"
-          } bg-white rounded-[4px] lg:rounded-[8px]`}
+          } bg-white rounded-[4px] lg:rounded-[8px] hidden lg:block`}
           onClick={() => setIsSettingsOpen(!isSettingsOpen)}
         >
           {isSettingsOpen ? (
