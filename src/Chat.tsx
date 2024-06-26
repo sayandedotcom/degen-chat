@@ -211,7 +211,7 @@ const Chat = () => {
             )}
       </div>
       {/* -------------------------------------- */}
-      <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full">
+      <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[15%] w-full ">
         <AnimatePresence>
           {isSettingsOpen ? (
             <motion.div
@@ -219,7 +219,7 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-50px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px] mt-[-100px] lg:mt-[0px]"
+              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-350px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px]  lg:mt-[0px] border border-black"
             >
               <div
                 className={`${
