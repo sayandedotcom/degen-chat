@@ -4,7 +4,7 @@ import { AiOutlineSend } from "react-icons/ai";
 import io from "socket.io-client";
 import SettingsIcon from "./components/SettingsIcon";
 import SettingsClosed from "./components/SettingsClosed";
-const socket = io("https://prithvikr.live");
+const socket = io(import.meta.env.VITE_BASE_URI);
 import { motion, AnimatePresence } from "framer-motion";
 import { useRecoilState } from "recoil";
 import { userProfilePicState } from "./atoms/users";
@@ -27,6 +27,7 @@ import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
 import EquatorTest from "./components/message-animations/EquatorTest";
 import { Link, useNavigate } from "react-router-dom";
+import MobileNav from "./components/MobileNav";
 // import { walletAddressState } from "./atoms/wallet";
 // import { useNavigate } from "react-router-dom";
 const BASE_URI = import.meta.env.VITE_BASE_URI;
@@ -68,6 +69,7 @@ const Chat = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [websiteAudio, setWebsiteAudio] = useRecoilState(websiteAudioState);
   const navigate = useNavigate();
+  const modalRef = useRef();
 
   useEffect(() => {
     audioRef.current!.play();
@@ -166,6 +168,19 @@ const Chat = () => {
     }
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (modalRef.current && !modalRef.current.contains(event.target)) {
+        setIsSettingsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <div
       style={{
@@ -181,9 +196,14 @@ const Chat = () => {
         </audio>
       </div>
       <div className="h-[5%] lg:h-[10%]">
-        <div className="w-[90%] flex justify-end">
+        <div className="w-[90%] lg:flex justify-end hidden">
           <Navbar websiteTheme />
         </div>
+        <MobileNav
+          isSettingsOpen={isSettingsOpen}
+          setIsSettingsOpen={setIsSettingsOpen}
+          socket={socket}
+        />
       </div>
 
       <div>
@@ -194,20 +214,6 @@ const Chat = () => {
       </div>
       {/* -------------------------------------- */}
       <div className="relative h-[75%] overflow-y-auto mb-[10px]  w-full">
-        <div className="sticky top-0 flex justify-end opacity-80 pr-[20px]">
-          <motion.button
-            whileTap={clickAnimation}
-            style={{ borderColor: websiteTheme.textColor }}
-            className={`p-[5px]   rounded-[4px] lg:rounded-[8px] lg:hidden border-[1px]  `}
-            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
-          >
-            {isSettingsOpen ? (
-              <SettingsClosed color={websiteTheme.textColor} />
-            ) : (
-              <SettingsIcon color={websiteTheme.textColor} />
-            )}
-          </motion.button>
-        </div>
         {settingsModal.motion === "focused"
           ? initialMessages.length > 0 && (
               <Focused
@@ -227,6 +233,7 @@ const Chat = () => {
         <AnimatePresence>
           {isSettingsOpen ? (
             <motion.div
+              ref={modalRef}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
@@ -598,20 +605,32 @@ const Chat = () => {
                       </p>
                     </div>
                   </div>
-                  <div className="flex flex-col gap-[15px] mt-[15px] w-full">
+                  <div className="lg:hidden flex flex-col gap-[15px] mt-[15px] w-full">
                     <button
                       onClick={() => navigate("/profile")}
                       className=" uppercase font-jbm  p-[5px]   "
                       style={{
-                        background: websiteTheme.bgColor,
-                        color: websiteTheme.textColor,
+                        background:
+                          websiteTheme.bgColor === "#ffffff"
+                            ? "black"
+                            : websiteTheme.bgColor,
+                        color:
+                          websiteTheme.bgColor === "#ffffff"
+                            ? "white"
+                            : websiteTheme.textColor,
                       }}
                     >
                       profile
                     </button>
                     <button
-                      className="  uppercase font-jbm  "
-                      style={{ color: websiteTheme.bgColor }}
+                      className={`  uppercase font-jbm  
+                       `}
+                      style={{
+                        color:
+                          websiteTheme.bgColor === "#ffffff"
+                            ? "#000000"
+                            : websiteTheme.bgColor,
+                      }}
                     >
                       <Link to={"/"}>exit</Link>
                     </button>
