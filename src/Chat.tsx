@@ -26,6 +26,7 @@ import slideMusic from "./assets/slide.mp3";
 import synthMusic from "./assets/synth.mp3";
 import ambientMusic from "./assets/ambient.mp3";
 import EquatorTest from "./components/message-animations/EquatorTest";
+import { Link, useNavigate } from "react-router-dom";
 // import { walletAddressState } from "./atoms/wallet";
 // import { useNavigate } from "react-router-dom";
 const BASE_URI = import.meta.env.VITE_BASE_URI;
@@ -66,6 +67,7 @@ const Chat = () => {
   const notificationRef = useRef<HTMLAudioElement | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [websiteAudio, setWebsiteAudio] = useRecoilState(websiteAudioState);
+  const navigate = useNavigate();
 
   useEffect(() => {
     audioRef.current!.play();
@@ -138,9 +140,9 @@ const Chat = () => {
     }
   };
 
-  const handleSave = () => {
-    setIsSettingsOpen(false);
-  };
+  // const handleSave = () => {
+  //   setIsSettingsOpen(false);
+  // };
 
   const clickAnimation = {
     scale: 0.9,
@@ -178,7 +180,7 @@ const Chat = () => {
           Your browser does not support the audio element.
         </audio>
       </div>
-      <div className="h-[10%]">
+      <div className="h-[5%] lg:h-[10%]">
         <div className="w-[90%] flex justify-end">
           <Navbar websiteTheme />
         </div>
@@ -195,11 +197,8 @@ const Chat = () => {
         <div className="sticky top-0 flex justify-end opacity-80 pr-[20px]">
           <motion.button
             whileTap={clickAnimation}
-            className={`p-[10px] lg:p-[15px] ${
-              websiteTheme.bgColor === "#ffffff"
-                ? "border border-black"
-                : "border-none"
-            } rounded-[4px] lg:rounded-[8px] lg:hidden`}
+            style={{ borderColor: websiteTheme.textColor }}
+            className={`p-[5px]   rounded-[4px] lg:rounded-[8px] lg:hidden border-[1px]  `}
             onClick={() => setIsSettingsOpen(!isSettingsOpen)}
           >
             {isSettingsOpen ? (
@@ -232,7 +231,7 @@ const Chat = () => {
               animate={{ y: 0 }}
               exit={{ y: "100%" }}
               transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-350px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px]   border border-black"
+              className="w-[90%] lg:w-[50%] xl:w-[35%] 2xl:w-[35%] relative top-[-450px] lg:top-[-100px] text-black z-10 flex flex-col gap-[10px]  "
             >
               <div
                 className={`${
@@ -528,7 +527,7 @@ const Chat = () => {
                 {/* ------------------------------- */}
                 <div className=" flex flex-col lg:flex-row lg:items-center  rounded-[8px]">
                   <p className=" w-[18%] text-[12px] lg:text-[16px]">motion</p>
-                  <div className=" flex w-full lg:justify-around justify-between mt-[10px] lg:mt-[0px]">
+                  <div className=" flex w-full lg:justify-around gap-[20px] sm:gap-[40px] lg:gap-0 mt-[10px] lg:mt-[0px]">
                     <div
                       className=" flex flex-col items-center"
                       onClick={() =>
@@ -598,12 +597,23 @@ const Chat = () => {
                         equator
                       </p>
                     </div>
-
+                  </div>
+                  <div className="flex flex-col gap-[15px] mt-[15px] w-full">
                     <button
-                      className=" lg:block lg:h-[70px] lg:w-[70px] uppercase flex items-center justify-center  text-[10px] lg:text-[16px] "
-                      onClick={handleSave}
+                      onClick={() => navigate("/profile")}
+                      className=" uppercase font-jbm  p-[5px]   "
+                      style={{
+                        background: websiteTheme.bgColor,
+                        color: websiteTheme.textColor,
+                      }}
                     >
-                      save
+                      profile
+                    </button>
+                    <button
+                      className="  uppercase font-jbm  "
+                      style={{ color: websiteTheme.bgColor }}
+                    >
+                      <Link to={"/"}>exit</Link>
                     </button>
                   </div>
                 </div>
