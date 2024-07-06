@@ -69,7 +69,7 @@ const Chat = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [websiteAudio, setWebsiteAudio] = useRecoilState(websiteAudioState);
   const navigate = useNavigate();
-  const modalRef = useRef();
+  const modalRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     audioRef.current!.play();
