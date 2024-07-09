@@ -31,6 +31,7 @@ import MobileNav from "./components/MobileNav";
 import Footer from "./components/Footer";
 import Pump from "./components/Pump";
 import Alpha from "./components/Alpha";
+import Chaos from "./components/message-animations/Chaos";
 // import { walletAddressState } from "./atoms/wallet"
 // import { useNavigate } from "react-router-dom"
 const BASE_URI = import.meta.env.VITE_BASE_URI;
@@ -199,19 +200,23 @@ const Chat = () => {
 
             {/* -------------------------------------- */}
             <div className="relative h-[70%] lg:h-[75%] overflow-y-auto mb-[10px]  w-full">
-              {settingsModal.motion === "focused"
-                ? initialMessages.length > 0 && (
-                    <Focused
-                      initialMessages={initialMessages}
-                      newMessage={newMessage}
-                    />
-                  )
-                : initialMessages.length > 0 && (
-                    <EquatorTest
-                      initialMessages={initialMessages}
-                      newMessage={newMessage}
-                    />
-                  )}
+              {settingsModal.motion === "focused" ? (
+                initialMessages.length > 0 && (
+                  <Focused
+                    initialMessages={initialMessages}
+                    newMessage={newMessage}
+                  />
+                )
+              ) : settingsModal.motion === "chaos" ? (
+                <Chaos newMessage={newMessage} />
+              ) : (
+                initialMessages.length > 0 && (
+                  <EquatorTest
+                    initialMessages={initialMessages}
+                    newMessage={newMessage}
+                  />
+                )
+              )}
             </div>
             {/* -------------------------------------- */}
             <div className="flex items-start lg:items-center justify-center gap-2 lg:gap-4 h-[7%] w-full ">
