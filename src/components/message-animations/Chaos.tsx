@@ -1,42 +1,71 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { MessageComponent } from "../MessageSpare";
 
 interface Message {
   _id: any;
   message: string;
   username: string;
   profilePic: string;
+  position: {
+    x: number;
+    y: number;
+  };
 }
 
-interface ChaosProps {
-  newMessage: Message | null;
-}
-
-const Chaos: React.FC<ChaosProps> = ({ newMessage }) => {
+const Chaos = ({
+  newMessage,
+  width,
+  height,
+}: {
+  newMessage: any;
+  width: number;
+  height: number;
+}) => {
   const [messages, setMessages] = useState<Message[]>([]);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (newMessage) {
-      const messageWithPosition = {
-        ...newMessage,
-        position: {
-          x: Math.random() * (window.innerWidth - 200),
-          y: Math.random() * (window.innerHeight - 100),
-        },
-      };
-      setMessages((prevMessages) => [...prevMessages, messageWithPosition]);
+    if (newMessage && containerRef.current) {
+      const messageHeight = 100;
+      const messageWidth = 200;
+      const chatAreaHeight = height * 0.7;
+      const chatAreaTop = height * 0.1;
 
-      setTimeout(() => {
-        setMessages((prevMessages) =>
-          prevMessages.filter((msg) => msg._id !== newMessage._id)
-        );
-      }, 3000 + Math.random() * 1000);
+      let latestMessage: Message;
+
+      if (Array.isArray(newMessage)) {
+        latestMessage = newMessage[newMessage.length - 1];
+      } else {
+        latestMessage = newMessage;
+      }
+
+      if (latestMessage) {
+        const messageWithPosition = {
+          ...latestMessage,
+          position: {
+            x: Math.random() * (width - messageWidth),
+            y: chatAreaTop + Math.random() * (chatAreaHeight - messageHeight),
+          },
+        };
+
+        setMessages((prevMessages) => [...prevMessages, messageWithPosition]);
+
+        setTimeout(() => {
+          setMessages((prevMessages) =>
+            prevMessages.filter((msg) => msg._id !== latestMessage._id)
+          );
+        }, 3000 + Math.random() * 1000);
+      }
     }
-    console.log(newMessage!.message);
-  }, [newMessage]);
+  }, [newMessage, width, height]);
 
   return (
-    <div className="fixed inset-0 pointer-events-none">
+    <div
+      ref={containerRef}
+      className="relative overflow-hidden"
+      style={{ width: `${width}px`, height: `${height}px` }}
+    >
       <AnimatePresence>
         {messages.map((message) => (
           <motion.div
@@ -45,23 +74,18 @@ const Chaos: React.FC<ChaosProps> = ({ newMessage }) => {
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.5 }}
             transition={{ duration: 0.5 }}
-            className="absolute  text-white p-2 rounded-lg  max-w-xs"
+            className="absolute text-white p-2 rounded-lg max-w-xs"
             style={{
-              left: message.position?.x,
-              top: message.position?.y,
+              left: message.position.x,
+              top: message.position.y,
             }}
           >
-            <div className="flex items-center space-x-2">
-              {/* <img
-                src={message.profilePic}
-                alt={message.username}
-                className="w-8 h-8 rounded-full"
-              /> */}
-              <div>
-                <p className="font-bold">kraken</p>
-                <p>the pain of an average man.</p>
-              </div>
-            </div>
+            <MessageComponent
+              message={message.message}
+              profilePic={message.profilePic}
+              username={message.username}
+              key={message._id}
+            />
           </motion.div>
         ))}
       </AnimatePresence>

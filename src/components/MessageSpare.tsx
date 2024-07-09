@@ -87,12 +87,7 @@ export const MessageComponent: React.FC<Message> = ({
           </div>
         </div>
       </div>
-      <div
-        className=" w-[100%] mx-auto h-[1px]  "
-        style={{
-          backgroundImage: `linear-gradient(to right , ${websiteTheme.bgColor} , ${websiteTheme.textColor} , ${websiteTheme.bgColor} )`,
-        }}
-      />
+
     </motion.div>
   );
 };

@@ -4,12 +4,14 @@ import { useEffect, useRef } from "react";
 import { AnimatePresence } from "framer-motion";
 import { MessageComponent } from "../Message";
 import React from "react";
+
 interface Message {
   _id: any;
   message: string;
   username: string;
   profilePic: string;
 }
+
 interface InitialMessage {
   _id: any;
   message: string;
@@ -26,6 +28,7 @@ const Focused = ({
 }) => {
   const websiteTheme = useRecoilValue(websiteThemeState);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  // const [openMessageModal, setOpenMessageModal] = useState(true);
 
   useEffect(() => {
     scrollToBottom();
@@ -34,6 +37,7 @@ const Focused = ({
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
+
   const formatMessage = (text: string) => {
     let formattedText = text.replace(/\\n/g, "\n");
 
@@ -49,17 +53,17 @@ const Focused = ({
 
   return (
     <>
-      <div className=" w-[90%] lg:w-[80%]  mx-auto  flex flex-col gap-[15px] lg:gap-[20px]">
+      <div className="w-[90%] lg:w-[80%] mx-auto flex flex-col gap-[15px] lg:gap-[20px] relative">
         {initialMessages?.map((msg: InitialMessage, index: number) => (
           <>
             <div
-              className="flex gap-2 lg:gap-5 xl:gap-10  items-center overflow-auto "
+              className="flex gap-2 lg:gap-5 xl:gap-10 items-center overflow-y-auto"
               key={index}
             >
-              <div className=" w-full hidden lg:flex gap-2 lg:gap-5 xl:gap-10  items-center mt-2 lg:mt-5 xl:mt-5  ">
-                <div className=" flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end ">
+              <div className="w-full hidden lg:flex gap-2 lg:gap-5 xl:gap-10 items-center mt-2 lg:mt-5 xl:mt-5">
+                <div className="flex items-center gap-[10px] w-[30%] lg:w-[20%] justify-end">
                   <p
-                    className=" text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap w-[50px]   sm:w-[70%]"
+                    className="text-[12px] lg:text-[14px] xl:text-[16px] text-right text-wrap w-[50px] sm:w-[70%]"
                     style={{
                       color: websiteTheme.textColor,
                       wordBreak: "break-word",
@@ -68,31 +72,29 @@ const Focused = ({
                   >
                     {msg.username}
                   </p>
-                  <div className=" rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden">
+                  <div className="rounded-full lg:h-[50px] lg:w-[50px] w-[35px] h-[35px] overflow-hidden flex-shrink-0">
                     <img
                       src={msg.profilePic}
-                      className=" object-cover w-full h-full"
+                      className="object-cover w-full h-full"
                     />
                   </div>
                 </div>
-                <div className="  w-[70%] lg:w-[60%]">
-                  <p className=" text-[13px] lg:text-[18px] xl:text-[20px]">
+                <div className="w-[70%] lg:w-[60%]">
+                  <p className="text-[13px] lg:text-[18px] xl:text-[20px]">
                     {msg.message}
                   </p>
                 </div>
               </div>
-              <div className=" lg:hidden flex gap-[10px] ">
-                <div
-                  className={`rounded-full lg:h-[50px] lg:w-[50px] w-[30px] h-[30px] overflow-hidden  `}
-                >
+              <div className="lg:hidden flex gap-[10px] items-center">
+                <div className="rounded-full lg:h-[50px] lg:w-[50px] w-[30px] h-[30px] overflow-hidden flex-shrink-0">
                   <img
                     src={msg.profilePic}
-                    className=" object-cover w-full h-full "
+                    className="object-cover w-full h-full"
                   />
                 </div>
                 <div>
                   <p
-                    className=" text-[12px] lg:text-[14px] xl:text-[16px]  "
+                    className="text-[12px] lg:text-[14px] xl:text-[16px]"
                     style={{
                       color: websiteTheme.textColor,
                       wordBreak: "break-word",
@@ -101,16 +103,21 @@ const Focused = ({
                   >
                     {msg.username}
                   </p>
-                  <div className="   lg:w-[60%] ">
+                  <div className="lg:w-[60%]">
                     <p
-                      className=" text-[15px] lg:text-[18px] xl:text-[20px] "
+                      className="text-[15px] lg:text-[18px] xl:text-[20px] "
+                      // onClick={() => setOpenMessageModal(true)}
                       style={{
                         color: websiteTheme.textColor,
                         wordBreak: "break-word",
                         whiteSpace: "normal",
                       }}
                     >
-                      {formatMessage(msg.message)}
+                      {formatMessage(
+                        msg.message.length > 300
+                          ? `${msg.message.slice(0, 100)}...`
+                          : msg.message
+                      )}
                     </p>
                   </div>
                 </div>

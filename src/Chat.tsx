@@ -53,6 +53,8 @@ interface Settings {
   audio: string;
   motion: string;
 }
+const totalWidth = window.innerWidth; 
+const totalHeight = window.innerHeight; 
 
 const Chat = () => {
   const [currentUserMessage, setCurrentUserMessage] = useState("");
@@ -147,9 +149,7 @@ const Chat = () => {
     }
   };
 
-  // const handleSave = () => {
-  //   setIsSettingsOpen(false)
-  // }
+
 
   const clickAnimation = {
     scale: 0.9,
@@ -208,7 +208,7 @@ const Chat = () => {
                   />
                 )
               ) : settingsModal.motion === "chaos" ? (
-                <Chaos newMessage={newMessage} />
+                <Chaos newMessage={newMessage} width={totalWidth} height={totalHeight} />
               ) : (
                 initialMessages.length > 0 && (
                   <EquatorTest
