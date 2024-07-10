@@ -1,7 +1,6 @@
 import { useRecoilValue } from "recoil";
 import JeaIcon from "../assets/JeaIcon.svg";
 import { websiteThemeState } from "../atoms/website-theme";
-// import { CopyTextIcon } from "./Icons";
 
 const Alpha = () => {
   const websiteTheme = useRecoilValue(websiteThemeState);
