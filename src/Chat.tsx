@@ -53,8 +53,8 @@ interface Settings {
   audio: string;
   motion: string;
 }
-const totalWidth = window.innerWidth; 
-const totalHeight = window.innerHeight; 
+const totalWidth = window.innerWidth;
+const totalHeight = window.innerHeight;
 
 const Chat = () => {
   const [currentUserMessage, setCurrentUserMessage] = useState("");
@@ -149,8 +149,6 @@ const Chat = () => {
     }
   };
 
-
-
   const clickAnimation = {
     scale: 0.9,
     transition: { type: "spring", stiffness: 400, damping: 10 },
@@ -208,7 +206,11 @@ const Chat = () => {
                   />
                 )
               ) : settingsModal.motion === "chaos" ? (
-                <Chaos newMessage={newMessage} width={totalWidth} height={totalHeight} />
+                <Chaos
+                  newMessage={newMessage}
+                  width={totalWidth}
+                  height={totalHeight}
+                />
               ) : (
                 initialMessages.length > 0 && (
                   <EquatorTest
@@ -643,7 +645,7 @@ const Chat = () => {
                     </div>
                   </motion.div>
                 ) : (
-                  <div className="w-[60%] lg:w-[40%] xl:w-[35%]  ">
+                  <div className="w-[60%] lg:w-[40%] xl:w-[35%]   ">
                     <motion.textarea
                       initial={{ y: "100%" }}
                       animate={{ y: 0 }}
@@ -734,7 +736,7 @@ const Chat = () => {
         backgroundColor: websiteTheme.bgColor,
         color: websiteTheme.textColor,
       }}
-      className={`transition-colors duration-1000 w-full h-screen  relative font-jbm uppercase max-h-screen overflow-hidden`}
+      className={`transition-colors duration-1000 w-full   relative font-jbm uppercase h-screen lg:h-screen overflow-hidden`}
     >
       <div>
         <audio ref={audioRef} loop>

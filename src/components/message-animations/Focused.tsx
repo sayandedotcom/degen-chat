@@ -1,9 +1,10 @@
 import { useRecoilValue } from "recoil";
 import { websiteThemeState } from "../../atoms/website-theme";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { MessageComponent } from "../Message";
 import React from "react";
+import { MessageModal } from "../MessageModal";
 
 interface Message {
   _id: any;
@@ -28,8 +29,9 @@ const Focused = ({
 }) => {
   const websiteTheme = useRecoilValue(websiteThemeState);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  // const [openMessageModal, setOpenMessageModal] = useState(true);
-
+  const [modalMessage, setModalMessage] = useState<string | null>(null);
+  const [modalUsername, setModalUsername] = useState<string | null>(null);
+  const [modalPfp, setModalPfp] = useState<string  | undefined>();
   useEffect(() => {
     scrollToBottom();
   }, [newMessage, initialMessages]);
@@ -54,6 +56,14 @@ const Focused = ({
   return (
     <>
       <div className="w-[90%] lg:w-[80%] mx-auto flex flex-col gap-[15px] lg:gap-[20px] relative">
+        {modalMessage && (
+          <MessageModal
+            message={modalMessage}
+            onClose={() => setModalMessage(null)}
+            username={modalUsername}
+            profilePic={modalPfp}
+          />
+        )}
         {initialMessages?.map((msg: InitialMessage, index: number) => (
           <>
             <div
@@ -105,8 +115,14 @@ const Focused = ({
                   </p>
                   <div className="lg:w-[60%]">
                     <p
+                      onClick={() => {
+                        if (msg.message.length > 300) {
+                          setModalMessage(msg.message);
+                          setModalPfp(msg.profilePic);
+                          setModalUsername(msg.username);
+                        }
+                      }}
                       className="text-[15px] lg:text-[18px] xl:text-[20px] "
-                      // onClick={() => setOpenMessageModal(true)}
                       style={{
                         color: websiteTheme.textColor,
                         wordBreak: "break-word",

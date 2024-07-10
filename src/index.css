@@ -2,9 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-body {
+/* body {
   cursor: url("./assets/cursor.svg"), auto;
-}
+} */
 @font-face {
   font-family: "JetBrains Mono";
   src: url("../src/assets/fonts/JetBrainsMono-Bold.ttf") format("opentype");
